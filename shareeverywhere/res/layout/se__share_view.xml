@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.dgmltn.shareeverywhere.IcsLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/activity_chooser_view_content"
+    android:layout_width="wrap_content"
+    android:layout_height="@dimen/se__preferred_height"
+    android:layout_gravity="center"
+    android:background="@drawable/se__ab_share_pack_holo_light"
+    android:divider="@drawable/se__list_divider_holo_light"
+    android:minHeight="@dimen/se__preferred_height"
+    android:dividerPadding="6dp"
+    android:showDividers="middle" >
+
+    <FrameLayout
+        android:id="@+id/expand_activities_button"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:addStatesFromChildren="true"
+        android:background="@drawable/se__bg_clickable_transparent_light"
+        android:clickable="true"
+        android:focusable="true" >
+
+        <ImageView
+            android:id="@+id/image"
+            android:layout_width="56dip"
+            android:layout_height="36dip"
+            android:layout_gravity="center"
+            android:adjustViewBounds="true"
+            android:clickable="true"
+            android:paddingBottom="2dip"
+            android:paddingLeft="12dip"
+            android:paddingRight="12dip"
+            android:paddingTop="2dip"
+            android:scaleType="fitCenter" />
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/default_activity_button"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:addStatesFromChildren="true"
+        android:background="@drawable/se__bg_clickable_transparent_light"
+        android:clickable="true"
+        android:focusable="true" >
+
+        <ImageView
+            android:id="@+id/image"
+            android:layout_width="56dip"
+            android:layout_height="36dip"
+            android:layout_gravity="center"
+            android:adjustViewBounds="true"
+            android:clickable="true"
+            android:paddingBottom="2dip"
+            android:paddingLeft="12dip"
+            android:paddingRight="12dip"
+            android:paddingTop="2dip"
+            android:scaleType="fitCenter" />
+    </FrameLayout>
+
+</com.dgmltn.shareeverywhere.IcsLinearLayout>

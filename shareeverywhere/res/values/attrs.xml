@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <attr name="se__dropDownListViewStyle" format="reference" />
+    <attr name="se__listPopupWindowStyle" format="reference" />
+    <attr name="se__shareViewHeight" format="dimension"></attr>
+
+</resources>
