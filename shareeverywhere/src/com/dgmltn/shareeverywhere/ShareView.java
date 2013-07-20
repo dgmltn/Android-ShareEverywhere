@@ -215,8 +215,6 @@ public class ShareView extends ViewGroup implements ActivityChooserModelClient {
 
 		mCallbacks = new Callbacks();
 
-		setActivityChooserModel(ActivityChooserModel.get(mContext, "share_history.xml"));
-
 		mActivityChooserContent = (IcsLinearLayout) findViewById(R.id.activity_chooser_view_content);
 		mActivityChooserContentBackground = mActivityChooserContent.getBackground();
 
@@ -240,6 +238,8 @@ public class ShareView extends ViewGroup implements ActivityChooserModelClient {
 				updateAppearance();
 			}
 		});
+
+		setActivityChooserModel(ActivityChooserModel.get(mContext, "share_history.xml"));
 
 		Resources resources = context.getResources();
 		mListPopupMaxWidth = Math.max(resources.getDisplayMetrics().widthPixels / 2,
