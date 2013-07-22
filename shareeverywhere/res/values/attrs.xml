@@ -3,6 +3,6 @@
 
     <attr name="se__dropDownListViewStyle" format="reference" />
     <attr name="se__listPopupWindowStyle" format="reference" />
-    <attr name="se__shareViewHeight" format="dimension"></attr>
+    <attr name="se__shareViewHeight" format="dimension" />
 
 </resources>

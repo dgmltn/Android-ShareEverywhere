@@ -1,8 +1,10 @@
 package com.dgmltn.shareeverywhere;
 
+import android.R.color;
 import android.content.Context;
 import android.content.res.Resources;
 import android.database.DataSetObserver;
+import android.graphics.Color;
 import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -581,6 +583,7 @@ public class IcsListPopupWindow {
 			mHijackFocus = hijackFocus;
 			// TODO: Add an API to control this
 			setCacheColorHint(0); // Transparent, since the background drawable could be anything.
+			setBackgroundResource(R.drawable.se__menu_dropdown_panel_holo_dark);
 		}
 
 		//XXX @Override
