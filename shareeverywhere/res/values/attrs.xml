@@ -1,8 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <attr name="se__dropDownListViewStyle" format="reference" />
-    <attr name="se__listPopupWindowStyle" format="reference" />
-    <attr name="se__shareViewHeight" format="dimension" />
+    <attr name="shareViewStyle" format="reference" />
+
+    <declare-styleable name="ShareView">
+        <attr name="sv_popupWindowStyle" format="reference" />
+        <attr name="sv_shareViewHeight" format="dimension" />
+        <attr name="sv_frameDrawable" format="reference" />
+        <attr name="sv_dividerDrawable" format="reference" />
+        <attr name="sv_buttonDrawable" format="reference" />
+        <attr name="sv_popupBackground" format="reference" />
+    </declare-styleable>
 
 </resources>

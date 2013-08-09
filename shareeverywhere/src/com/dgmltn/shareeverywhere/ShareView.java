@@ -21,6 +21,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.content.res.Resources;
+import android.content.res.TypedArray;
 import android.database.DataSetObserver;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
@@ -204,24 +205,31 @@ public class ShareView extends ViewGroup implements ActivityChooserModelClient {
 	public ShareView(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
 		mContext = context;
+		
+		TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.ShareView,
+                R.attr.shareViewStyle, 0);
+		int expandActivityOverflowResId = a.getResourceId(R.styleable.ShareView_sv_buttonDrawable, 0);
+		int minHeight = a.getDimensionPixelSize(R.styleable.ShareView_sv_shareViewHeight, 0);
+		Drawable dividerDrawable = a.getDrawable(R.styleable.ShareView_sv_dividerDrawable);
+		mActivityChooserContentBackground = a.getDrawable(R.styleable.ShareView_sv_frameDrawable);
+		a.recycle();
 
 		mInitialActivityCount = ActivityChooserViewAdapter.MAX_ACTIVITY_COUNT_DEFAULT;
 
-		Drawable expandActivityOverflowButtonDrawable = getResources().getDrawable(
-				R.drawable.se__ic_menu_share_holo_light);
-
 		LayoutInflater inflater = LayoutInflater.from(mContext);
-		inflater.inflate(R.layout.se__share_view, this, true);
+		inflater.inflate(R.layout.sv__share_view, this, true);
 
 		mCallbacks = new Callbacks();
 
 		mActivityChooserContent = (IcsLinearLayout) findViewById(R.id.activity_chooser_view_content);
-		mActivityChooserContentBackground = mActivityChooserContent.getBackground();
+		mActivityChooserContent.setBackground(mActivityChooserContentBackground);
+		mActivityChooserContent.setDividerDrawable(dividerDrawable);
+		mActivityChooserContent.setMinimumHeight(minHeight);
 
 		mExpandActivityOverflowButton = (FrameLayout) findViewById(R.id.expand_activities_button);
 		mExpandActivityOverflowButton.setOnClickListener(mCallbacks);
 		mExpandActivityOverflowButtonImage = (ImageView) mExpandActivityOverflowButton.findViewById(R.id.image);
-		mExpandActivityOverflowButtonImage.setImageDrawable(expandActivityOverflowButtonDrawable);
+		mExpandActivityOverflowButtonImage.setImageResource(expandActivityOverflowResId);
 		mExpandActivityOverflowButtonImage.setOnClickListener(mCallbacks);
 
 		mDefaultActivityButton = (FrameLayout) findViewById(R.id.default_activity_button);
@@ -243,7 +251,7 @@ public class ShareView extends ViewGroup implements ActivityChooserModelClient {
 
 		Resources resources = context.getResources();
 		mListPopupMaxWidth = Math.max(resources.getDisplayMetrics().widthPixels / 2,
-				resources.getDimensionPixelSize(R.dimen.se__preferred_dialog_width));
+				resources.getDimensionPixelSize(R.dimen.sv__preferred_dialog_width));
 	}
 
 	/**
@@ -732,7 +740,7 @@ public class ShareView extends ViewGroup implements ActivityChooserModelClient {
 			case ITEM_VIEW_TYPE_FOOTER:
 				if (convertView == null || convertView.getId() != ITEM_VIEW_TYPE_FOOTER) {
 					convertView = LayoutInflater.from(getContext()).inflate(
-							R.layout.se__share_view_list_item, parent, false);
+							R.layout.sv__share_view_list_item, parent, false);
 					convertView.setId(ITEM_VIEW_TYPE_FOOTER);
 					TextView titleView = (TextView) convertView.findViewById(R.id.title);
 					titleView.setText(mContext.getString(
@@ -742,7 +750,7 @@ public class ShareView extends ViewGroup implements ActivityChooserModelClient {
 			case ITEM_VIEW_TYPE_ACTIVITY:
 				if (convertView == null || convertView.getId() != R.id.list_item) {
 					convertView = LayoutInflater.from(getContext()).inflate(
-							R.layout.se__share_view_list_item, parent, false);
+							R.layout.sv__share_view_list_item, parent, false);
 				}
 				PackageManager packageManager = mContext.getPackageManager();
 				// Set the icon

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Widget">
+        <item name="android:textAppearance">?android:attr/textAppearance</item>
+    </style>
+
+    <style name="Widget.ShareView">
+        <item name="sv_popupWindowStyle">@style/Widget.ShareViewPopup</item>
+        <item name="sv_shareViewHeight">48dp</item>
+        <item name="sv_frameDrawable">@drawable/sv__border_dark</item>
+        <item name="sv_dividerDrawable">@drawable/sv__list_divider_holo_dark</item>
+        <item name="sv_buttonDrawable">@drawable/sv__ic_menu_share_holo_dark</item>
+        <item name="sv_popupBackground">@drawable/sv__menu_dropdown_panel_holo_light</item>
+    </style>
+
+    <style name="Widget.ShareView.Dark" />
+
+    <style name="Widget.ShareView.Light">
+        <item name="sv_popupWindowStyle">@style/Widget.ShareViewPopup.Light</item>
+        <item name="sv_frameDrawable">@drawable/sv__border_light</item>
+        <item name="sv_dividerDrawable">@drawable/sv__list_divider_holo_light</item>
+        <item name="sv_buttonDrawable">@drawable/sv__ic_menu_share_holo_light</item>
+        <item name="sv_popupBackground">@drawable/sv__menu_dropdown_panel_holo_dark</item>
+    </style>
+
+    <style name="Widget.ShareViewPopup">
+        <item name="android:dropDownSelector">@drawable/sv__bg_clickable_transparent_dark</item>
+        <item name="android:popupBackground">@drawable/sv__menu_dropdown_panel_holo_light</item>
+        <item name="android:dropDownVerticalOffset">0dip</item>
+        <item name="android:dropDownHorizontalOffset">0dip</item>
+        <item name="android:dropDownWidth">wrap_content</item>
+    </style>
+
+    <style name="Widget.ShareViewPopup.Dark" />
+    
+    <style name="Widget.ShareViewPopup.Light">
+        <item name="android:dropDownSelector">@drawable/sv__bg_clickable_transparent_light</item>
+        <item name="android:popupBackground">@drawable/sv__menu_dropdown_panel_holo_dark</item>
+    </style>
+
+</resources>

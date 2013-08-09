@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <dimen name="se__preferred_height">48dp</dimen>
-    <dimen name="se__preferred_dropdown_item_height">48dip</dimen>
-    <dimen name="se__preferred_dialog_width">320dp</dimen>
+    <dimen name="sv__preferred_height">48dp</dimen>
+    <dimen name="sv__preferred_dropdown_item_height">48dip</dimen>
+    <dimen name="sv__preferred_dialog_width">320dp</dimen>
 
 </resources>

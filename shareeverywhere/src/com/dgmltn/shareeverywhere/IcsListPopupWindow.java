@@ -1,6 +1,7 @@
 package com.dgmltn.shareeverywhere;
 
 import android.R.color;
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.Resources;
 import android.database.DataSetObserver;
@@ -76,7 +77,7 @@ public class IcsListPopupWindow {
 	public static final int POSITION_PROMPT_BELOW = 1;
 
 	public IcsListPopupWindow(Context context) {
-		this(context, null, R.attr.se__listPopupWindowStyle);
+		this(context, null, R.attr.sv_popupWindowStyle);
 	}
 
 	public IcsListPopupWindow(Context context, AttributeSet attrs, int defStyleAttr) {
@@ -85,6 +86,7 @@ public class IcsListPopupWindow {
 		mPopup.setInputMethodMode(PopupWindow.INPUT_METHOD_NEEDED);
 	}
 
+	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
 	public IcsListPopupWindow(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
 		mContext = context;
 		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {
@@ -235,7 +237,7 @@ public class IcsListPopupWindow {
 
 			//http://stackoverflow.com/questions/3121232/android-popup-window-dismissal
 			mPopup.setBackgroundDrawable(new BitmapDrawable());
-			
+
 			// use outside touchable to dismiss drop down when touching outside of it, so
 			// only set this if the dropdown is not always visible
 			mPopup.setOutsideTouchable(true);
@@ -476,7 +478,8 @@ public class IcsListPopupWindow {
 		// Include the padding of the list
 		int returnedHeight = mDropDownList.getListPaddingTop() + mDropDownList.getListPaddingBottom();
 		final int dividerHeight = ((mDropDownList.getDividerHeight() > 0) && mDropDownList.getDivider() != null) ? mDropDownList
-				.getDividerHeight() : 0;
+				.getDividerHeight()
+				: 0;
 		// The previous height value that was less than maxHeight and contained
 		// no partial children
 		int prevHeightWithoutPartialChild = 0;
@@ -579,11 +582,11 @@ public class IcsListPopupWindow {
 		private boolean mHijackFocus;
 
 		public DropDownListView(Context context, boolean hijackFocus) {
-			super(context, null, /*com.android.internal.*/R.attr.se__dropDownListViewStyle);
+			super(context, null, R.attr.sv_popupWindowStyle);
 			mHijackFocus = hijackFocus;
 			// TODO: Add an API to control this
 			setCacheColorHint(0); // Transparent, since the background drawable could be anything.
-			setBackgroundResource(R.drawable.se__menu_dropdown_panel_holo_dark);
+			setBackgroundResource(R.drawable.sv__menu_dropdown_panel_holo_dark);
 		}
 
 		//XXX @Override

@@ -2,11 +2,8 @@
 <com.dgmltn.shareeverywhere.IcsLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/activity_chooser_view_content"
     android:layout_width="wrap_content"
-    android:layout_height="@dimen/se__preferred_height"
+    android:layout_height="@dimen/sv__preferred_height"
     android:layout_gravity="center"
-    android:background="@drawable/se__ab_share_pack_holo_light"
-    android:divider="@drawable/se__list_divider_holo_light"
-    android:minHeight="@dimen/se__preferred_height"
     android:dividerPadding="6dp"
     android:showDividers="middle" >
 
@@ -16,7 +13,7 @@
         android:layout_height="match_parent"
         android:layout_gravity="center"
         android:addStatesFromChildren="true"
-        android:background="@drawable/se__bg_clickable_transparent_light"
+        android:background="@drawable/sv__bg_clickable_transparent_light"
         android:clickable="true"
         android:focusable="true" >
 
@@ -40,7 +37,7 @@
         android:layout_height="match_parent"
         android:layout_gravity="center"
         android:addStatesFromChildren="true"
-        android:background="@drawable/se__bg_clickable_transparent_light"
+        android:background="@drawable/sv__bg_clickable_transparent_light"
         android:clickable="true"
         android:focusable="true" >
 
