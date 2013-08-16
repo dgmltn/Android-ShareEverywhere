@@ -9,7 +9,9 @@
         <attr name="sv_frameDrawable" format="reference" />
         <attr name="sv_dividerDrawable" format="reference" />
         <attr name="sv_buttonDrawable" format="reference" />
-        <attr name="sv_popupBackground" format="reference" />
+        <attr name="sv_buttonBackground" format="reference|color" />
+        <attr name="sv_popupBackground" format="reference|color" />
+        <attr name="sv_favoriteDisplayed" format="boolean" />
     </declare-styleable>
 
 </resources>

@@ -13,7 +13,6 @@
         android:layout_height="match_parent"
         android:layout_gravity="center"
         android:addStatesFromChildren="true"
-        android:background="@drawable/sv__bg_clickable_transparent_light"
         android:clickable="true"
         android:focusable="true" >
 
@@ -37,7 +36,6 @@
         android:layout_height="match_parent"
         android:layout_gravity="center"
         android:addStatesFromChildren="true"
-        android:background="@drawable/sv__bg_clickable_transparent_light"
         android:clickable="true"
         android:focusable="true" >
 

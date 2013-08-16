@@ -12,9 +12,17 @@
         <item name="sv_dividerDrawable">@drawable/sv__list_divider_holo_dark</item>
         <item name="sv_buttonDrawable">@drawable/sv__ic_menu_share_holo_dark</item>
         <item name="sv_popupBackground">@drawable/sv__menu_dropdown_panel_holo_light</item>
+        <item name="sv_buttonBackground">@drawable/sv__bg_clickable_transparent_light</item>
+        <item name="sv_favoriteDisplayed">true</item>
     </style>
 
     <style name="Widget.ShareView.Dark" />
+
+    <style name="Widget.ShareView.Dark.Simple">
+        <item name="sv_frameDrawable">@null</item>
+        <item name="sv_dividerDrawable">@null</item>
+        <item name="sv_favoriteDisplayed">false</item>
+    </style>
 
     <style name="Widget.ShareView.Light">
         <item name="sv_popupWindowStyle">@style/Widget.ShareViewPopup.Light</item>
@@ -22,6 +30,12 @@
         <item name="sv_dividerDrawable">@drawable/sv__list_divider_holo_light</item>
         <item name="sv_buttonDrawable">@drawable/sv__ic_menu_share_holo_light</item>
         <item name="sv_popupBackground">@drawable/sv__menu_dropdown_panel_holo_dark</item>
+    </style>
+
+    <style name="Widget.ShareView.Light.Simple">
+        <item name="sv_frameDrawable">@null</item>
+        <item name="sv_dividerDrawable">@null</item>
+        <item name="sv_favoriteDisplayed">false</item>
     </style>
 
     <style name="Widget.ShareViewPopup">
@@ -33,7 +47,7 @@
     </style>
 
     <style name="Widget.ShareViewPopup.Dark" />
-    
+
     <style name="Widget.ShareViewPopup.Light">
         <item name="android:dropDownSelector">@drawable/sv__bg_clickable_transparent_light</item>
         <item name="android:popupBackground">@drawable/sv__menu_dropdown_panel_holo_dark</item>

@@ -26,6 +26,7 @@ import android.database.DataSetObserver;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -106,6 +107,11 @@ public class ShareView extends ViewGroup implements ActivityChooserModelClient {
 	 * The image for the default activities action button;
 	 */
 	private final ImageView mDefaultActivityButtonImage;
+
+	/**
+	 * Whether the default activities action button should be displayed;
+	 */
+	private final boolean mDisplayDefaultActivityButton;
 
 	/**
 	 * The maximal width of the list popup.
@@ -205,13 +211,22 @@ public class ShareView extends ViewGroup implements ActivityChooserModelClient {
 	public ShareView(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
 		mContext = context;
-		
+
 		TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.ShareView,
-                R.attr.shareViewStyle, 0);
+				R.attr.shareViewStyle, 0);
+
 		int expandActivityOverflowResId = a.getResourceId(R.styleable.ShareView_sv_buttonDrawable, 0);
+
 		int minHeight = a.getDimensionPixelSize(R.styleable.ShareView_sv_shareViewHeight, 0);
+
 		Drawable dividerDrawable = a.getDrawable(R.styleable.ShareView_sv_dividerDrawable);
+
 		mActivityChooserContentBackground = a.getDrawable(R.styleable.ShareView_sv_frameDrawable);
+
+		mDisplayDefaultActivityButton = a.getBoolean(R.styleable.ShareView_sv_favoriteDisplayed, true);
+
+		Drawable buttonBackground = a.getDrawable(R.styleable.ShareView_sv_buttonBackground);
+
 		a.recycle();
 
 		mInitialActivityCount = ActivityChooserViewAdapter.MAX_ACTIVITY_COUNT_DEFAULT;
@@ -227,16 +242,21 @@ public class ShareView extends ViewGroup implements ActivityChooserModelClient {
 		mActivityChooserContent.setMinimumHeight(minHeight);
 
 		mExpandActivityOverflowButton = (FrameLayout) findViewById(R.id.expand_activities_button);
+		mExpandActivityOverflowButton.setBackground(buttonBackground);
 		mExpandActivityOverflowButton.setOnClickListener(mCallbacks);
 		mExpandActivityOverflowButtonImage = (ImageView) mExpandActivityOverflowButton.findViewById(R.id.image);
 		mExpandActivityOverflowButtonImage.setImageResource(expandActivityOverflowResId);
 		mExpandActivityOverflowButtonImage.setOnClickListener(mCallbacks);
 
 		mDefaultActivityButton = (FrameLayout) findViewById(R.id.default_activity_button);
-		mDefaultActivityButton.setOnClickListener(mCallbacks);
-		mDefaultActivityButton.setOnLongClickListener(mCallbacks);
+		mDefaultActivityButton.setVisibility(mDisplayDefaultActivityButton ? View.VISIBLE : View.GONE);
 		mDefaultActivityButtonImage = (ImageView) mDefaultActivityButton.findViewById(R.id.image);
-		mDefaultActivityButtonImage.setOnClickListener(mCallbacks);
+		if (mDisplayDefaultActivityButton) {
+			mDefaultActivityButton.setBackground(buttonBackground);
+			mDefaultActivityButton.setOnClickListener(mCallbacks);
+			mDefaultActivityButton.setOnLongClickListener(mCallbacks);
+			mDefaultActivityButtonImage.setOnClickListener(mCallbacks);
+		}
 
 		mAdapter = new ActivityChooserViewAdapter();
 		mAdapter.registerDataSetObserver(new DataSetObserver() {
@@ -516,7 +536,7 @@ public class ShareView extends ViewGroup implements ActivityChooserModelClient {
 		// Default activity button.
 		final int activityCount = mAdapter.getActivityCount();
 		final int historySize = mAdapter.getHistorySize();
-		if (activityCount > 0 && historySize > 0) {
+		if (activityCount > 0 && historySize > 0 && mDisplayDefaultActivityButton) {
 			mDefaultActivityButton.setVisibility(VISIBLE);
 			ResolveInfo activity = mAdapter.getDefaultActivity();
 			PackageManager packageManager = mContext.getPackageManager();
