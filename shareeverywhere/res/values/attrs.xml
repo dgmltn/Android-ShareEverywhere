@@ -6,9 +6,9 @@
     <declare-styleable name="ShareView">
         <attr name="sv_popupWindowStyle" format="reference" />
         <attr name="sv_shareViewHeight" format="dimension" />
-        <attr name="sv_frameDrawable" format="reference" />
-        <attr name="sv_dividerDrawable" format="reference" />
-        <attr name="sv_buttonDrawable" format="reference" />
+        <attr name="sv_frameBackground" format="reference|color" />
+        <attr name="sv_dividerDrawable" format="reference|color" />
+        <attr name="sv_buttonDrawable" format="reference|color" />
         <attr name="sv_buttonBackground" format="reference|color" />
         <attr name="sv_popupBackground" format="reference|color" />
         <attr name="sv_favoriteDisplayed" format="boolean" />

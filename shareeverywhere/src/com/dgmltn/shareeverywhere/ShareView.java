@@ -26,7 +26,6 @@ import android.database.DataSetObserver;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -221,7 +220,7 @@ public class ShareView extends ViewGroup implements ActivityChooserModelClient {
 
 		Drawable dividerDrawable = a.getDrawable(R.styleable.ShareView_sv_dividerDrawable);
 
-		mActivityChooserContentBackground = a.getDrawable(R.styleable.ShareView_sv_frameDrawable);
+		mActivityChooserContentBackground = a.getDrawable(R.styleable.ShareView_sv_frameBackground);
 
 		mDisplayDefaultActivityButton = a.getBoolean(R.styleable.ShareView_sv_favoriteDisplayed, true);
 

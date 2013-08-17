@@ -8,7 +8,7 @@
     <style name="Widget.ShareView">
         <item name="sv_popupWindowStyle">@style/Widget.ShareViewPopup</item>
         <item name="sv_shareViewHeight">48dp</item>
-        <item name="sv_frameDrawable">@drawable/sv__border_dark</item>
+        <item name="sv_frameBackground">@drawable/sv__border_dark</item>
         <item name="sv_dividerDrawable">@drawable/sv__list_divider_holo_dark</item>
         <item name="sv_buttonDrawable">@drawable/sv__ic_menu_share_holo_dark</item>
         <item name="sv_popupBackground">@drawable/sv__menu_dropdown_panel_holo_light</item>
@@ -19,25 +19,37 @@
     <style name="Widget.ShareView.Dark" />
 
     <style name="Widget.ShareView.Dark.Simple">
-        <item name="sv_frameDrawable">@null</item>
-        <item name="sv_dividerDrawable">@null</item>
         <item name="sv_favoriteDisplayed">false</item>
     </style>
 
     <style name="Widget.ShareView.Light">
         <item name="sv_popupWindowStyle">@style/Widget.ShareViewPopup.Light</item>
-        <item name="sv_frameDrawable">@drawable/sv__border_light</item>
+        <item name="sv_frameBackground">@drawable/sv__border_light</item>
         <item name="sv_dividerDrawable">@drawable/sv__list_divider_holo_light</item>
         <item name="sv_buttonDrawable">@drawable/sv__ic_menu_share_holo_light</item>
         <item name="sv_popupBackground">@drawable/sv__menu_dropdown_panel_holo_dark</item>
     </style>
 
     <style name="Widget.ShareView.Light.Simple">
-        <item name="sv_frameDrawable">@null</item>
-        <item name="sv_dividerDrawable">@null</item>
         <item name="sv_favoriteDisplayed">false</item>
     </style>
 
+    <style name="Widget.ShareView.Holo.Dark" parent="Widget.ShareView.Dark">
+        <item name="sv_buttonBackground">@drawable/sv__list_selector_holo_dark</item>
+    </style>
+
+    <style name="Widget.ShareView.Holo.Dark.Simple">
+        <item name="sv_favoriteDisplayed">false</item>
+    </style>
+
+    <style name="Widget.ShareView.Holo.Light" parent="Widget.ShareView.Light">
+        <item name="sv_buttonBackground">@drawable/sv__list_selector_holo_light</item>
+    </style>
+
+    <style name="Widget.ShareView.Holo.Light.Simple">
+        <item name="sv_favoriteDisplayed">false</item>
+    </style>
+    
     <style name="Widget.ShareViewPopup">
         <item name="android:dropDownSelector">@drawable/sv__bg_clickable_transparent_dark</item>
         <item name="android:popupBackground">@drawable/sv__menu_dropdown_panel_holo_light</item>
