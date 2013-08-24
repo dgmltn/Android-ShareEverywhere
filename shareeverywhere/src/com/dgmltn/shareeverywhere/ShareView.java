@@ -413,6 +413,7 @@ public class ShareView extends ViewGroup implements ActivityChooserModelClient {
 		if (dataModel != null) {
 			try {
 				dataModel.registerObserver(mModelDataSetOberver);
+				dataModel.notifyChanged();
 			}
 			catch (IllegalStateException e) {
 				// Related to #557.
