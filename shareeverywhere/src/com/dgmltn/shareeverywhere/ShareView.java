@@ -120,7 +120,7 @@ public class ShareView extends ViewGroup implements ActivityChooserModelClient {
 	/**
 	 * Observer for the model data.
 	 */
-	private final DataSetObserver mModelDataSetOberver = new DataSetObserver() {
+	private final DataSetObserver mModelDataSetObserver = new DataSetObserver() {
 
 		@Override
 		public void onChanged() {
@@ -412,7 +412,7 @@ public class ShareView extends ViewGroup implements ActivityChooserModelClient {
 		ActivityChooserModel dataModel = mAdapter.getDataModel();
 		if (dataModel != null) {
 			try {
-				dataModel.registerObserver(mModelDataSetOberver);
+				dataModel.registerObserver(mModelDataSetObserver);
 				dataModel.notifyChanged();
 			}
 			catch (IllegalStateException e) {
@@ -428,7 +428,7 @@ public class ShareView extends ViewGroup implements ActivityChooserModelClient {
 		ActivityChooserModel dataModel = mAdapter.getDataModel();
 		if (dataModel != null) {
 			try {
-				dataModel.unregisterObserver(mModelDataSetOberver);
+				dataModel.unregisterObserver(mModelDataSetObserver);
 			}
 			catch (IllegalStateException e) {
 				//Oh, well... fixes issue #557
@@ -689,7 +689,7 @@ public class ShareView extends ViewGroup implements ActivityChooserModelClient {
 			ActivityChooserModel oldDataModel = mAdapter.getDataModel();
 			if (oldDataModel != null && isShown()) {
 				try {
-					oldDataModel.unregisterObserver(mModelDataSetOberver);
+					oldDataModel.unregisterObserver(mModelDataSetObserver);
 				}
 				catch (IllegalStateException e) {
 					//Oh, well... fixes issue #557
@@ -698,7 +698,7 @@ public class ShareView extends ViewGroup implements ActivityChooserModelClient {
 			mDataModel = dataModel;
 			if (dataModel != null && isShown()) {
 				try {
-					dataModel.registerObserver(mModelDataSetOberver);
+					dataModel.registerObserver(mModelDataSetObserver);
 				}
 				catch (IllegalStateException e) {
 					// Related to #557.
