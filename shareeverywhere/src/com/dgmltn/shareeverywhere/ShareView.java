@@ -27,6 +27,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
@@ -68,6 +69,16 @@ public class ShareView extends ViewGroup implements ActivityChooserModelClient {
 	private static final String TAG = ShareView.class.getSimpleName();
 
 	/**
+	 * The default for the maximal number of activities shown in the sub-menu.
+	 */
+	public static final int DEFAULT_INITIAL_ACTIVITY_COUNT = 4;
+
+	/**
+	 * The default name for storing share history.
+	 */
+	public static final String DEFAULT_SHARE_HISTORY_FILE_NAME = "share_history.xml";
+
+	/**
 	 * An adapter for displaying the activities in an {@link AdapterView}.
 	 */
 	private final ActivityChooserViewAdapter mAdapter;
@@ -75,7 +86,7 @@ public class ShareView extends ViewGroup implements ActivityChooserModelClient {
 	/**
 	 * Implementation of various interfaces to avoid publishing them in the APIs.
 	 */
-	private final Callbacks mCallbacks;
+	protected final Callbacks mCallbacks;
 
 	/**
 	 * The content of this view.
@@ -167,7 +178,7 @@ public class ShareView extends ViewGroup implements ActivityChooserModelClient {
 	/**
 	 * The count of activities in the popup.
 	 */
-	private int mInitialActivityCount = ActivityChooserViewAdapter.MAX_ACTIVITY_COUNT_DEFAULT;
+	private int mInitialActivityCount = DEFAULT_INITIAL_ACTIVITY_COUNT;
 
 	/**
 	 * Flag whether this view is attached to a window.
@@ -266,7 +277,7 @@ public class ShareView extends ViewGroup implements ActivityChooserModelClient {
 			}
 		});
 
-		setActivityChooserModel(ActivityChooserModel.get(mContext, "share_history.xml"));
+		setActivityChooserModel(ActivityChooserModel.get(mContext, DEFAULT_SHARE_HISTORY_FILE_NAME));
 
 		Resources resources = context.getResources();
 		mListPopupMaxWidth = Math.max(resources.getDisplayMetrics().widthPixels / 2,
@@ -282,6 +293,10 @@ public class ShareView extends ViewGroup implements ActivityChooserModelClient {
 			dismissPopup();
 			showPopup();
 		}
+	}
+
+	public ActivityChooserModel getActivityChooserModel() {
+		return mAdapter.mDataModel;
 	}
 
 	/**
@@ -466,10 +481,6 @@ public class ShareView extends ViewGroup implements ActivityChooserModelClient {
 		}
 	}
 
-	public ActivityChooserModel getDataModel() {
-		return mAdapter.getDataModel();
-	}
-
 	/**
 	 * Sets a listener to receive a callback when the popup is dismissed.
 	 *
@@ -568,7 +579,7 @@ public class ShareView extends ViewGroup implements ActivityChooserModelClient {
 	/**
 	 * Interface implementation to avoid publishing them in the APIs.
 	 */
-	private class Callbacks implements AdapterView.OnItemClickListener,
+	private class Callbacks implements AdapterView.OnItemClickListener, MenuItem.OnMenuItemClickListener,
 			View.OnClickListener, View.OnLongClickListener, PopupWindow.OnDismissListener {
 
 		// AdapterView#OnItemClickListener
@@ -585,15 +596,16 @@ public class ShareView extends ViewGroup implements ActivityChooserModelClient {
 				if (mIsSelectingDefaultActivity) {
 					// The item at position zero is the default already.
 					if (position > 0) {
-						mAdapter.getDataModel().setDefaultActivity(position);
+						mAdapter.mDataModel.setDefaultActivity(position);
 					}
 				}
 				else {
 					// If the default target is not shown in the list, the first
 					// item in the model is default action => adjust index
 					position = mAdapter.getShowDefaultActivity() ? position : position + 1;
-					Intent launchIntent = mAdapter.getDataModel().chooseActivity(position);
+					Intent launchIntent = mAdapter.mDataModel.chooseActivity(position);
 					if (launchIntent != null) {
+						launchIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
 						mContext.startActivity(launchIntent);
 					}
 				}
@@ -604,7 +616,19 @@ public class ShareView extends ViewGroup implements ActivityChooserModelClient {
 			}
 		}
 
+		@Override
+		public boolean onMenuItemClick(MenuItem item) {
+			final int itemId = item.getItemId();
+			Intent launchIntent = mAdapter.mDataModel.chooseActivity(itemId);
+			if (launchIntent != null) {
+				launchIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
+				mContext.startActivity(launchIntent);
+			}
+			return true;
+		}
+
 		// View.OnClickListener
+		@Override
 		public void onClick(View view) {
 			if (view == mDefaultActivityButton || view == mDefaultActivityButtonImage) {
 				dismissPopup();
@@ -666,8 +690,6 @@ public class ShareView extends ViewGroup implements ActivityChooserModelClient {
 
 		public static final int MAX_ACTIVITY_COUNT_UNLIMITED = Integer.MAX_VALUE;
 
-		public static final int MAX_ACTIVITY_COUNT_DEFAULT = 4;
-
 		private static final int ITEM_VIEW_TYPE_ACTIVITY = 0;
 
 		private static final int ITEM_VIEW_TYPE_FOOTER = 1;
@@ -676,7 +698,7 @@ public class ShareView extends ViewGroup implements ActivityChooserModelClient {
 
 		private ActivityChooserModel mDataModel;
 
-		private int mMaxActivityCount = MAX_ACTIVITY_COUNT_DEFAULT;
+		private int mMaxActivityCount = DEFAULT_INITIAL_ACTIVITY_COUNT;
 
 		// Work-around for #415.
 		private boolean mShowDefaultActivity = true;
