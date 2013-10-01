@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.view.ActionProvider;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MenuItem.OnMenuItemClickListener;
@@ -26,7 +27,7 @@ public class ShareActionProvider extends ActionProvider {
 	public ShareActionProvider(Context context) {
 		super(context);
 		mContext = context;
-		mShareView = new ShareView(mContext);
+		mShareView = (ShareView) LayoutInflater.from(context).inflate(R.layout.sv__share_view, null);
 	}
 
 	@Override
@@ -51,7 +52,7 @@ public class ShareActionProvider extends ActionProvider {
 		final int expandedActivityCount = dataModel.getActivityCount();
 		final int collapsedActivityCount = Math.min(expandedActivityCount,
 				ShareView.DEFAULT_INITIAL_ACTIVITY_COUNT);
-		
+
 		// Populate the sub-menu with a sub set of the activities.
 		for (int i = 0; i < collapsedActivityCount; i++) {
 			ResolveInfo activity = dataModel.getActivity(i);

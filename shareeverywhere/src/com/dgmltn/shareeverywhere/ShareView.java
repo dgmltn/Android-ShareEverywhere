@@ -224,31 +224,30 @@ public class ShareView extends ViewGroup implements ActivityChooserModelClient {
 
 		TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.ShareView, R.attr.shareViewStyle, 0);
 
-		int expandActivityOverflowResId = a.getResourceId(R.styleable.ShareView_sv_buttonDrawable,
-				R.drawable.sv__ic_menu_share_holo_dark);
+		int expandActivityOverflowResId = a.getResourceId(R.styleable.ShareView_sv_buttonDrawable, 0);
 
 		int minHeight = a.getDimensionPixelSize(R.styleable.ShareView_sv_shareViewHeight, 0);
 
-		int dividerResId = a.getResourceId(R.styleable.ShareView_sv_dividerDrawable,
-				R.drawable.sv__list_divider_holo_dark);
+		int dividerResId = a.getResourceId(R.styleable.ShareView_sv_dividerDrawable, 0);
 
-		mBackgroundResId = a.getResourceId(R.styleable.ShareView_sv_frameBackground, R.drawable.sv__border_dark);
+		mBackgroundResId = a.getResourceId(R.styleable.ShareView_sv_frameBackground, 0);
 
 		mDisplayDefaultActivityButton = a.getBoolean(R.styleable.ShareView_sv_favoriteDisplayed, true);
 
-		int buttonBackgroundResId = a.getResourceId(R.styleable.ShareView_sv_buttonBackground,
-				R.drawable.sv__list_selector_holo_dark);
+		int buttonBackgroundResId = a.getResourceId(R.styleable.ShareView_sv_buttonBackground, 0);
 
 		a.recycle();
 
 		LayoutInflater inflater = LayoutInflater.from(mContext);
-		inflater.inflate(R.layout.sv__share_view, this, true);
+		inflater.inflate(R.layout.sv__share_view_impl, this, true);
 
 		mCallbacks = new Callbacks();
 
 		mActivityChooserContent = (IcsLinearLayout) findViewById(R.id.activity_chooser_view_content);
 		mActivityChooserContent.setBackgroundResource(mBackgroundResId);
-		mActivityChooserContent.setDividerDrawable(context.getResources().getDrawable(dividerResId));
+		if (dividerResId != 0) {
+			mActivityChooserContent.setDividerDrawable(context.getResources().getDrawable(dividerResId));
+		}
 		mActivityChooserContent.setMinimumHeight(minHeight);
 
 		mExpandActivityOverflowButton = (FrameLayout) findViewById(R.id.expand_activities_button);

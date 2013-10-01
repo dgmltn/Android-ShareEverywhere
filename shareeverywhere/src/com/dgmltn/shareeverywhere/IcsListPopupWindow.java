@@ -75,7 +75,7 @@ public class IcsListPopupWindow {
 	public static final int POSITION_PROMPT_BELOW = 1;
 
 	public IcsListPopupWindow(Context context) {
-		this(context, null, R.attr.sv_popupWindowStyle);
+		this(context, null, 0);
 	}
 
 	public IcsListPopupWindow(Context context, AttributeSet attrs, int defStyleAttr) {
@@ -588,7 +588,7 @@ public class IcsListPopupWindow {
 		private boolean mHijackFocus;
 
 		public DropDownListView(Context context, boolean hijackFocus) {
-			super(context, null, R.attr.sv_popupWindowStyle);
+			super(context, null, 0);
 			mHijackFocus = hijackFocus;
 			// TODO: Add an API to control this
 			setCacheColorHint(0); // Transparent, since the background drawable could be anything.
