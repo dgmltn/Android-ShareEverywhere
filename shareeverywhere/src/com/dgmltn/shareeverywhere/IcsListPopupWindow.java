@@ -1,11 +1,9 @@
 package com.dgmltn.shareeverywhere;
 
-import android.R.color;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.Resources;
 import android.database.DataSetObserver;
-import android.graphics.Color;
 import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -84,6 +82,8 @@ public class IcsListPopupWindow {
 		mContext = context;
 		mPopup = new PopupWindow(context, attrs, defStyleAttr);
 		mPopup.setInputMethodMode(PopupWindow.INPUT_METHOD_NEEDED);
+		mPopup.setBackgroundDrawable(mContext.getResources().getDrawable(
+				R.drawable.sv__menu_dropdown_panel_holo_dark));
 	}
 
 	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
@@ -97,6 +97,8 @@ public class IcsListPopupWindow {
 			mPopup = new PopupWindow(context, attrs, defStyleAttr, defStyleRes);
 		}
 		mPopup.setInputMethodMode(PopupWindow.INPUT_METHOD_NEEDED);
+		mPopup.setBackgroundDrawable(mContext.getResources().getDrawable(
+				R.drawable.sv__menu_dropdown_panel_holo_dark));
 	}
 
 	public void setAdapter(ListAdapter adapter) {
@@ -236,7 +238,9 @@ public class IcsListPopupWindow {
 			//XXX mPopup.setClipToScreenEnabled(true);
 
 			//http://stackoverflow.com/questions/3121232/android-popup-window-dismissal
-			mPopup.setBackgroundDrawable(new BitmapDrawable());
+			if (mPopup.getBackground() == null) {
+				mPopup.setBackgroundDrawable(new BitmapDrawable());
+			}
 
 			// use outside touchable to dismiss drop down when touching outside of it, so
 			// only set this if the dropdown is not always visible
@@ -586,7 +590,6 @@ public class IcsListPopupWindow {
 			mHijackFocus = hijackFocus;
 			// TODO: Add an API to control this
 			setCacheColorHint(0); // Transparent, since the background drawable could be anything.
-			setBackgroundResource(R.drawable.sv__menu_dropdown_panel_holo_dark);
 		}
 
 		//XXX @Override
