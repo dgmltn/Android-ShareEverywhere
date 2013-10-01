@@ -3,6 +3,7 @@ package com.dgmltn.shareeverywhere;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.Resources;
+import android.content.res.Resources.NotFoundException;
 import android.database.DataSetObserver;
 import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
@@ -82,8 +83,6 @@ public class IcsListPopupWindow {
 		mContext = context;
 		mPopup = new PopupWindow(context, attrs, defStyleAttr);
 		mPopup.setInputMethodMode(PopupWindow.INPUT_METHOD_NEEDED);
-		mPopup.setBackgroundDrawable(mContext.getResources().getDrawable(
-				R.drawable.sv__menu_dropdown_panel_holo_dark));
 	}
 
 	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
@@ -97,8 +96,6 @@ public class IcsListPopupWindow {
 			mPopup = new PopupWindow(context, attrs, defStyleAttr, defStyleRes);
 		}
 		mPopup.setInputMethodMode(PopupWindow.INPUT_METHOD_NEEDED);
-		mPopup.setBackgroundDrawable(mContext.getResources().getDrawable(
-				R.drawable.sv__menu_dropdown_panel_holo_dark));
 	}
 
 	public void setAdapter(ListAdapter adapter) {
@@ -125,6 +122,16 @@ public class IcsListPopupWindow {
 	public void setModal(boolean modal) {
 		mModal = true;
 		mPopup.setFocusable(modal);
+	}
+
+	public void setBackgroundResource(int resId) {
+		try {
+			mPopup.setBackgroundDrawable(mContext.getResources().getDrawable(resId));
+		}
+		catch (NotFoundException e) {
+			// Invalid resource? We don't care.
+			e.printStackTrace();
+		}
 	}
 
 	public void setBackgroundDrawable(Drawable d) {

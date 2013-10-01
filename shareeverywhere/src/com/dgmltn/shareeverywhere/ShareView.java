@@ -97,6 +97,8 @@ public class ShareView extends ViewGroup implements ActivityChooserModelClient {
 	 * Stores the background drawable to allow hiding and latter showing.
 	 */
 	private final int mBackgroundResId;
+	private final int mButtonBackgroundResId;
+	private final int mPopupBackgroundResId;
 
 	/**
 	 * The expand activities action button;
@@ -225,16 +227,12 @@ public class ShareView extends ViewGroup implements ActivityChooserModelClient {
 		TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.ShareView, R.attr.shareViewStyle, 0);
 
 		int expandActivityOverflowResId = a.getResourceId(R.styleable.ShareView_sv_buttonDrawable, 0);
-
 		int minHeight = a.getDimensionPixelSize(R.styleable.ShareView_sv_shareViewHeight, 0);
-
 		int dividerResId = a.getResourceId(R.styleable.ShareView_sv_dividerDrawable, 0);
-
 		mBackgroundResId = a.getResourceId(R.styleable.ShareView_sv_frameBackground, 0);
-
 		mDisplayDefaultActivityButton = a.getBoolean(R.styleable.ShareView_sv_favoriteDisplayed, true);
-
-		int buttonBackgroundResId = a.getResourceId(R.styleable.ShareView_sv_buttonBackground, 0);
+		mButtonBackgroundResId = a.getResourceId(R.styleable.ShareView_sv_buttonBackground, 0);
+		mPopupBackgroundResId = a.getResourceId(R.styleable.ShareView_sv_popupBackground, 0);
 
 		a.recycle();
 
@@ -251,7 +249,7 @@ public class ShareView extends ViewGroup implements ActivityChooserModelClient {
 		mActivityChooserContent.setMinimumHeight(minHeight);
 
 		mExpandActivityOverflowButton = (FrameLayout) findViewById(R.id.expand_activities_button);
-		mExpandActivityOverflowButton.setBackgroundResource(buttonBackgroundResId);
+		mExpandActivityOverflowButton.setBackgroundResource(mButtonBackgroundResId);
 		mExpandActivityOverflowButton.setOnClickListener(mCallbacks);
 		mExpandActivityOverflowButtonImage = (ImageView) mExpandActivityOverflowButton.findViewById(R.id.image);
 		mExpandActivityOverflowButtonImage.setImageResource(expandActivityOverflowResId);
@@ -261,7 +259,7 @@ public class ShareView extends ViewGroup implements ActivityChooserModelClient {
 		mDefaultActivityButton.setVisibility(mDisplayDefaultActivityButton ? View.VISIBLE : View.GONE);
 		mDefaultActivityButtonImage = (ImageView) mDefaultActivityButton.findViewById(R.id.image);
 		if (mDisplayDefaultActivityButton) {
-			mDefaultActivityButton.setBackgroundResource(buttonBackgroundResId);
+			mDefaultActivityButton.setBackgroundResource(mButtonBackgroundResId);
 			mDefaultActivityButton.setOnClickListener(mCallbacks);
 			mDefaultActivityButton.setOnLongClickListener(mCallbacks);
 			mDefaultActivityButtonImage.setOnClickListener(mCallbacks);
@@ -528,6 +526,7 @@ public class ShareView extends ViewGroup implements ActivityChooserModelClient {
 			mListPopupWindow.setModal(true);
 			mListPopupWindow.setOnItemClickListener(mCallbacks);
 			mListPopupWindow.setOnDismissListener(mCallbacks);
+			mListPopupWindow.setBackgroundResource(mPopupBackgroundResId);
 		}
 		return mListPopupWindow;
 	}

@@ -2,7 +2,7 @@
 <resources>
 
     <style name="SampleTheme" parent="@android:style/Theme">
-        <item name="shareViewStyle">@style/Widget.ShareView</item>
+        <item name="shareViewStyle">@style/Widget.ShareView.Dark</item>
     </style>
 
     <style name="SampleTheme.Light" parent="@android:style/Theme.Light">
