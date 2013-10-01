@@ -331,6 +331,8 @@ public class IcsListPopupWindow {
 			if (mDropDownListHighlight != null) {
 				mDropDownList.setSelector(mDropDownListHighlight);
 			}
+			mDropDownList.setDivider(context.getResources().getDrawable(R.drawable.sv__list_divider_holo_dark));
+			mDropDownList.setSelector(R.drawable.sv__list_selector_holo_dark);
 			mDropDownList.setAdapter(mAdapter);
 			mDropDownList.setOnItemClickListener(mItemClickListener);
 			mDropDownList.setFocusable(true);
