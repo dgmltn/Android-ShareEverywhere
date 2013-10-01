@@ -211,24 +211,24 @@ public class ShareView extends ViewGroup implements ActivityChooserModelClient {
 		super(context, attrs, defStyle);
 		mContext = context;
 
-		TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.ShareView,
-				R.attr.shareViewStyle, 0);
+		TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.ShareView, R.attr.shareViewStyle, 0);
 
-		int expandActivityOverflowResId = a.getResourceId(R.styleable.ShareView_sv_buttonDrawable, 0);
+		int expandActivityOverflowResId = a.getResourceId(R.styleable.ShareView_sv_buttonDrawable,
+				R.drawable.sv__ic_menu_share_holo_dark);
 
 		int minHeight = a.getDimensionPixelSize(R.styleable.ShareView_sv_shareViewHeight, 0);
 
-		Drawable dividerDrawable = a.getDrawable(R.styleable.ShareView_sv_dividerDrawable);
+		int dividerResId = a.getResourceId(R.styleable.ShareView_sv_dividerDrawable,
+				R.drawable.sv__list_divider_holo_dark);
 
-		mBackgroundResId = a.getResourceId(R.styleable.ShareView_sv_frameBackground, 0);
+		mBackgroundResId = a.getResourceId(R.styleable.ShareView_sv_frameBackground, R.drawable.sv__border_dark);
 
 		mDisplayDefaultActivityButton = a.getBoolean(R.styleable.ShareView_sv_favoriteDisplayed, true);
 
-		int buttonBackgroundResId = a.getResourceId(R.styleable.ShareView_sv_buttonBackground, 0);
+		int buttonBackgroundResId = a.getResourceId(R.styleable.ShareView_sv_buttonBackground,
+				R.drawable.sv__list_selector_holo_dark);
 
 		a.recycle();
-
-		mInitialActivityCount = ActivityChooserViewAdapter.MAX_ACTIVITY_COUNT_DEFAULT;
 
 		LayoutInflater inflater = LayoutInflater.from(mContext);
 		inflater.inflate(R.layout.sv__share_view, this, true);
@@ -237,7 +237,7 @@ public class ShareView extends ViewGroup implements ActivityChooserModelClient {
 
 		mActivityChooserContent = (IcsLinearLayout) findViewById(R.id.activity_chooser_view_content);
 		mActivityChooserContent.setBackgroundResource(mBackgroundResId);
-		mActivityChooserContent.setDividerDrawable(dividerDrawable);
+		mActivityChooserContent.setDividerDrawable(context.getResources().getDrawable(dividerResId));
 		mActivityChooserContent.setMinimumHeight(minHeight);
 
 		mExpandActivityOverflowButton = (FrameLayout) findViewById(R.id.expand_activities_button);

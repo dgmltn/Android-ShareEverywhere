@@ -11,8 +11,8 @@
         <item name="sv_frameBackground">@drawable/sv__border_dark</item>
         <item name="sv_dividerDrawable">@drawable/sv__list_divider_holo_dark</item>
         <item name="sv_buttonDrawable">@drawable/sv__ic_menu_share_holo_dark</item>
+        <item name="sv_buttonBackground">@drawable/sv__list_selector_holo_light</item>
         <item name="sv_popupBackground">@drawable/sv__menu_dropdown_panel_holo_light</item>
-        <item name="sv_buttonBackground">@drawable/sv__bg_clickable_transparent_light</item>
         <item name="sv_favoriteDisplayed">true</item>
     </style>
 
@@ -27,6 +27,7 @@
         <item name="sv_frameBackground">@drawable/sv__border_light</item>
         <item name="sv_dividerDrawable">@drawable/sv__list_divider_holo_light</item>
         <item name="sv_buttonDrawable">@drawable/sv__ic_menu_share_holo_light</item>
+        <item name="sv_buttonBackground">@drawable/sv__list_selector_holo_dark</item>
         <item name="sv_popupBackground">@drawable/sv__menu_dropdown_panel_holo_dark</item>
     </style>
 
