@@ -220,7 +220,7 @@ public class ShareView extends ViewGroup implements ActivityChooserModelClient {
 
 		Drawable dividerDrawable = a.getDrawable(R.styleable.ShareView_sv_dividerDrawable);
 
-		mBackgroundResId = a.getResourceId(R.styleable.ShareView_sv_frameDrawable, 0);
+		mBackgroundResId = a.getResourceId(R.styleable.ShareView_sv_frameBackground, 0);
 
 		mDisplayDefaultActivityButton = a.getBoolean(R.styleable.ShareView_sv_favoriteDisplayed, true);
 
