@@ -865,7 +865,11 @@ public class ActivityChooserModel extends DataSetObservable {
 		}
 
 		public int compareTo(ActivityResolveInfo another) {
-			return Float.floatToIntBits(another.weight) - Float.floatToIntBits(weight);
+			int weightDiff = Float.floatToIntBits(another.weight) - Float.floatToIntBits(weight);
+			if (weightDiff == 0) {
+				return label.compareTo(another.label);
+			}
+			return weightDiff;
 		}
 
 		@Override
