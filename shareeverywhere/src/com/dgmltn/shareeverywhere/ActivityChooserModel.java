@@ -235,7 +235,7 @@ public class ActivityChooserModel extends DataSetObservable {
 	/**
 	 * List of activities that can handle the current intent.
 	 */
-	private final List<ActivityResolveInfo> mActivites = new ArrayList<ActivityResolveInfo>();
+	private final List<ActivityResolveInfo> mActivities = new ArrayList<ActivityResolveInfo>();
 
 	/**
 	 * List with historical choice records.
@@ -378,7 +378,7 @@ public class ActivityChooserModel extends DataSetObservable {
 	 */
 	public int getActivityCount() {
 		synchronized (mInstanceLock) {
-			return mActivites.size();
+			return mActivities.size();
 		}
 	}
 
@@ -392,7 +392,7 @@ public class ActivityChooserModel extends DataSetObservable {
 	 */
 	public ActivityResolveInfo getActivity(int index) {
 		synchronized (mInstanceLock) {
-			return mActivites.get(index);
+			return mActivities.get(index);
 		}
 	}
 
@@ -404,7 +404,7 @@ public class ActivityChooserModel extends DataSetObservable {
 	 * @return The index if found, -1 otherwise.
 	 */
 	public int getActivityIndex(ActivityResolveInfo activity) {
-		return mActivites.indexOf(activity);
+		return mActivities.indexOf(activity);
 	}
 
 	/**
@@ -425,7 +425,7 @@ public class ActivityChooserModel extends DataSetObservable {
 	 * @see OnChooseActivityListener
 	 */
 	public Intent chooseActivity(int index) {
-		ActivityResolveInfo chosenActivity = mActivites.get(index);
+		ActivityResolveInfo chosenActivity = mActivities.get(index);
 
 		ComponentName chosenName = new ComponentName(
 				chosenActivity.resolveInfo.activityInfo.packageName,
@@ -471,8 +471,8 @@ public class ActivityChooserModel extends DataSetObservable {
 	 */
 	public ActivityResolveInfo getDefaultActivity() {
 		synchronized (mInstanceLock) {
-			if (!mActivites.isEmpty()) {
-				return mActivites.get(0);
+			if (!mActivities.isEmpty()) {
+				return mActivities.get(0);
 			}
 		}
 		return null;
@@ -489,8 +489,8 @@ public class ActivityChooserModel extends DataSetObservable {
 	 * @param index The index of the activity to set as default.
 	 */
 	public void setDefaultActivity(int index) {
-		ActivityResolveInfo newDefaultActivity = mActivites.get(index);
-		ActivityResolveInfo oldDefaultActivity = mActivites.get(0);
+		ActivityResolveInfo newDefaultActivity = mActivities.get(index);
+		ActivityResolveInfo oldDefaultActivity = mActivities.get(0);
 
 		final float weight;
 		if (oldDefaultActivity != null) {
@@ -586,8 +586,8 @@ public class ActivityChooserModel extends DataSetObservable {
 	 */
 	private void sortActivities() {
 		synchronized (mInstanceLock) {
-			if (mActivitySorter != null && !mActivites.isEmpty()) {
-				mActivitySorter.sort(mActivites,
+			if (mActivitySorter != null && !mActivities.isEmpty()) {
+				mActivitySorter.sort(mActivities,
 						Collections.unmodifiableList(mHistoricalRecords));
 				notifyChanged();
 			}
@@ -681,7 +681,7 @@ public class ActivityChooserModel extends DataSetObservable {
 	 * Loads the activities.
 	 */
 	private void loadActivitiesLocked(Intent... intents) {
-		mActivites.clear();
+		mActivities.clear();
 
 		if (intents == null || intents.length == 0) {
 			notifyChanged();
@@ -694,8 +694,8 @@ public class ActivityChooserModel extends DataSetObservable {
 
 			for (ResolveInfo resolveInfo : resolveInfos) {
 				ActivityResolveInfo info = new ActivityResolveInfo(resolveInfo, intent);
-				if (!info.isContainedIn(mActivites)) {
-					mActivites.add(info);
+				if (!info.isContainedIn(mActivities)) {
+					mActivities.add(info);
 				}
 			}
 		}
