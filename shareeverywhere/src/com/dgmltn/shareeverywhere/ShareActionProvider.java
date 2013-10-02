@@ -7,8 +7,6 @@ import android.content.pm.ResolveInfo;
 import android.view.ActionProvider;
 import android.view.LayoutInflater;
 import android.view.Menu;
-import android.view.MenuItem;
-import android.view.MenuItem.OnMenuItemClickListener;
 import android.view.SubMenu;
 import android.view.View;
 
@@ -74,7 +72,11 @@ public class ShareActionProvider extends ActionProvider {
 		}
 	}
 
-	public void setIntent(Intent intent) {
-		mShareView.setIntent(intent);
+	/**
+	 * Set the intent(s) for this ShareActionProvider.
+	 * @param intent
+	 */
+	public void setIntent(Intent... intents) {
+		mShareView.setIntent(intents);
 	}
 }

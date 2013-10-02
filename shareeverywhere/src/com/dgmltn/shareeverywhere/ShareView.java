@@ -312,12 +312,12 @@ public class ShareView extends ViewGroup implements ActivityChooserModelClient {
 	}
 
 	/**
-	 * Set the intent for this ShareView.
+	 * Set the intent(s) for this ShareView.
 	 * @param intent
 	 */
-	public void setIntent(Intent intent) {
+	public void setIntent(Intent... intents) {
 		if (mAdapter != null && mAdapter.mDataModel != null) {
-			mAdapter.mDataModel.setIntent(intent);
+			mAdapter.mDataModel.setIntent(intents);
 		}
 	}
 

@@ -125,7 +125,7 @@ public class ActivityChooserModel extends DataSetObservable {
 		 */
 		// This cannot be done by a simple comparator since an Activity weight
 		// is computed from history. Note that Activity implements Comparable.
-		public void sort(Intent intent, List<ActivityResolveInfo> activities,
+		public void sort(List<ActivityResolveInfo> activities,
 				List<HistoricalRecord> historicalRecords);
 	}
 
@@ -256,11 +256,6 @@ public class ActivityChooserModel extends DataSetObservable {
 	private final String mHistoryFileName;
 
 	/**
-	 * The intent for which a activity is being chosen.
-	 */
-	private Intent mIntent;
-
-	/**
 	 * The sorter for ordering activities based on intent and past choices.
 	 */
 	private ActivitySorter mActivitySorter = new DefaultSorter();
@@ -363,41 +358,26 @@ public class ActivityChooserModel extends DataSetObservable {
 	}
 
 	/**
-	 * Sets an intent for which to choose a activity.
-	 * <p>
-	 * <strong>Note:</strong> Clients must set only semantically similar
-	 * intents for each data model.
-	 * <p>
-	 *
+	 * Sets one or more intents for which to choose an activity.
+	 * 
+	 * Multiple intents CAN be passed here. If a package resolves to more
+	 * than one of the intents, and that package is the one chosen, it
+	 * will be started using the first in this list that it resolves to.
+	 * 
 	 * @param intent The intent.
 	 */
-	public void setIntent(Intent intent) {
+	public void setIntent(Intent... intents) {
 		synchronized (mInstanceLock) {
-			if (mIntent == intent) {
-				return;
-			}
-			mIntent = intent;
-			loadActivitiesLocked();
+			loadActivitiesLocked(intents);
 		}
 	}
 
 	/**
-	 * Gets the intent for which a activity is being chosen.
-	 *
-	 * @return The intent.
-	 */
-	public Intent getIntent() {
-		synchronized (mInstanceLock) {
-			return mIntent;
-		}
-	}
-
-	/**
-	 * Gets the number of activities that can handle the intent.
+	 * Gets the number of activities that can handle the specified intents.
 	 *
 	 * @return The activity count.
 	 *
-	 * @see #setIntent(Intent)
+	 * @see #setIntent(Intent...)
 	 */
 	public int getActivityCount() {
 		synchronized (mInstanceLock) {
@@ -411,7 +391,7 @@ public class ActivityChooserModel extends DataSetObservable {
 	 * @return The activity.
 	 *
 	 * @see ActivityResolveInfo
-	 * @see #setIntent(Intent)
+	 * @see #setIntent(Intent...)
 	 */
 	public ResolveInfo getActivity(int index) {
 		synchronized (mInstanceLock) {
@@ -462,7 +442,7 @@ public class ActivityChooserModel extends DataSetObservable {
 				chosenActivity.resolveInfo.activityInfo.packageName,
 				chosenActivity.resolveInfo.activityInfo.name);
 
-		Intent choiceIntent = new Intent(mIntent);
+		Intent choiceIntent = new Intent(chosenActivity.intent);
 		choiceIntent.setComponent(chosenName);
 
 		if (mActivityChoserModelPolicy != null) {
@@ -618,7 +598,7 @@ public class ActivityChooserModel extends DataSetObservable {
 	private void sortActivities() {
 		synchronized (mInstanceLock) {
 			if (mActivitySorter != null && !mActivites.isEmpty()) {
-				mActivitySorter.sort(mIntent, mActivites,
+				mActivitySorter.sort(mActivites,
 						Collections.unmodifiableList(mHistoricalRecords));
 				notifyChanged();
 			}
@@ -711,21 +691,27 @@ public class ActivityChooserModel extends DataSetObservable {
 	/**
 	 * Loads the activities.
 	 */
-	private void loadActivitiesLocked() {
+	private void loadActivitiesLocked(Intent... intents) {
 		mActivites.clear();
-		if (mIntent != null) {
-			List<ResolveInfo> resolveInfos =
-					mContext.getPackageManager().queryIntentActivities(mIntent, 0);
-			final int resolveInfoCount = resolveInfos.size();
-			for (int i = 0; i < resolveInfoCount; i++) {
-				ResolveInfo resolveInfo = resolveInfos.get(i);
-				mActivites.add(new ActivityResolveInfo(resolveInfo));
-			}
-			sortActivities();
-		}
-		else {
+
+		if (intents == null || intents.length == 0) {
 			notifyChanged();
+			return;
 		}
+
+		for (Intent intent : intents) {
+			List<ResolveInfo> resolveInfos =
+					mContext.getPackageManager().queryIntentActivities(intent, 0);
+
+			for (ResolveInfo resolveInfo : resolveInfos) {
+				ActivityResolveInfo info = new ActivityResolveInfo(resolveInfo, intent);
+				if (!info.isContainedIn(mActivites)) {
+					mActivites.add(info);
+				}
+			}
+		}
+
+		sortActivities();
 	}
 
 	/**
@@ -834,6 +820,11 @@ public class ActivityChooserModel extends DataSetObservable {
 		public final ResolveInfo resolveInfo;
 
 		/**
+		 * The specific Intent associated with this activity.
+		 */
+		public final Intent intent;
+
+		/**
 		 * Weight of the activity. Useful for sorting.
 		 */
 		public float weight;
@@ -843,8 +834,9 @@ public class ActivityChooserModel extends DataSetObservable {
 		 *
 		 * @param resolveInfo activity {@link ResolveInfo}.
 		 */
-		public ActivityResolveInfo(ResolveInfo resolveInfo) {
+		public ActivityResolveInfo(ResolveInfo resolveInfo, Intent intent) {
 			this.resolveInfo = resolveInfo;
+			this.intent = intent;
 		}
 
 		@Override
@@ -883,6 +875,16 @@ public class ActivityChooserModel extends DataSetObservable {
 			builder.append("]");
 			return builder.toString();
 		}
+
+		public boolean isContainedIn(List<ActivityResolveInfo> list) {
+			String thisPackageName = resolveInfo.activityInfo.packageName;
+			for (ActivityResolveInfo other : list) {
+				if (thisPackageName.equals(other.resolveInfo.activityInfo.packageName)) {
+					return true;
+				}
+			}
+			return false;
+		}
 	}
 
 	/**
@@ -894,7 +896,7 @@ public class ActivityChooserModel extends DataSetObservable {
 		private final Map<String, ActivityResolveInfo> mPackageNameToActivityMap =
 				new HashMap<String, ActivityResolveInfo>();
 
-		public void sort(Intent intent, List<ActivityResolveInfo> activities,
+		public void sort(List<ActivityResolveInfo> activities,
 				List<HistoricalRecord> historicalRecords) {
 			Map<String, ActivityResolveInfo> packageNameToActivityMap =
 					mPackageNameToActivityMap;
