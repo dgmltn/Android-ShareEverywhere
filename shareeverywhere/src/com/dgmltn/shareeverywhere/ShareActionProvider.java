@@ -46,7 +46,6 @@ public class ShareActionProvider extends ActionProvider {
 		subMenu.clear();
 
 		ActivityChooserModel dataModel = mShareView.getActivityChooserModel();
-		PackageManager packageManager = mContext.getPackageManager();
 
 		final int expandedActivityCount = dataModel.getActivityCount();
 		final int collapsedActivityCount = Math.min(expandedActivityCount,
