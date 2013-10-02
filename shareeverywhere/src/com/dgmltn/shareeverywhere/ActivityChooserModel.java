@@ -38,9 +38,11 @@ import org.xmlpull.v1.XmlSerializer;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.database.DataSetObservable;
 import android.database.DataSetObserver;
+import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.text.TextUtils;
 import android.util.Log;
@@ -213,11 +215,6 @@ public class ActivityChooserModel extends DataSetObservable {
 	 * The extension of the history file.
 	 */
 	private static final String HISTORY_FILE_EXTENSION = ".xml";
-
-	/**
-	 * An invalid item index.
-	 */
-	private static final int INVALID_INDEX = -1;
 
 	/**
 	 * Lock to guard the model registry.
@@ -393,9 +390,9 @@ public class ActivityChooserModel extends DataSetObservable {
 	 * @see ActivityResolveInfo
 	 * @see #setIntent(Intent...)
 	 */
-	public ResolveInfo getActivity(int index) {
+	public ActivityResolveInfo getActivity(int index) {
 		synchronized (mInstanceLock) {
-			return mActivites.get(index).resolveInfo;
+			return mActivites.get(index);
 		}
 	}
 
@@ -406,16 +403,8 @@ public class ActivityChooserModel extends DataSetObservable {
 	 *
 	 * @return The index if found, -1 otherwise.
 	 */
-	public int getActivityIndex(ResolveInfo activity) {
-		List<ActivityResolveInfo> activities = mActivites;
-		final int activityCount = activities.size();
-		for (int i = 0; i < activityCount; i++) {
-			ActivityResolveInfo currentActivity = activities.get(i);
-			if (currentActivity.resolveInfo == activity) {
-				return i;
-			}
-		}
-		return INVALID_INDEX;
+	public int getActivityIndex(ActivityResolveInfo activity) {
+		return mActivites.indexOf(activity);
 	}
 
 	/**
@@ -480,10 +469,10 @@ public class ActivityChooserModel extends DataSetObservable {
 	 *
 	 * @see #getActivity(int)
 	 */
-	public ResolveInfo getDefaultActivity() {
+	public ActivityResolveInfo getDefaultActivity() {
 		synchronized (mInstanceLock) {
 			if (!mActivites.isEmpty()) {
-				return mActivites.get(0).resolveInfo;
+				return mActivites.get(0);
 			}
 		}
 		return null;
@@ -825,6 +814,16 @@ public class ActivityChooserModel extends DataSetObservable {
 		public final Intent intent;
 
 		/**
+		 * The label for this item that's displayed to the user.
+		 */
+		public final String label;
+
+		/**
+		 * The icon for this item that's displayed to the user.
+		 */
+		public final Drawable icon;
+
+		/**
 		 * Weight of the activity. Useful for sorting.
 		 */
 		public float weight;
@@ -837,6 +836,9 @@ public class ActivityChooserModel extends DataSetObservable {
 		public ActivityResolveInfo(ResolveInfo resolveInfo, Intent intent) {
 			this.resolveInfo = resolveInfo;
 			this.intent = intent;
+			PackageManager pm = mContext.getPackageManager();
+			this.label = resolveInfo.loadLabel(pm).toString();
+			this.icon = resolveInfo.loadIcon(pm);
 		}
 
 		@Override

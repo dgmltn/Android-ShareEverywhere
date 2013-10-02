@@ -42,6 +42,7 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.dgmltn.shareeverywhere.ActivityChooserModel.ActivityChooserModelClient;
+import com.dgmltn.shareeverywhere.ActivityChooserModel.ActivityResolveInfo;
 
 /**
  * This class is a view for choosing an activity for handling a given {@link Intent}.
@@ -564,13 +565,11 @@ public class ShareView extends ViewGroup implements ActivityChooserModelClient {
 		final int historySize = mAdapter.getHistorySize();
 		if (activityCount > 0 && historySize > 0 && mDisplayDefaultActivityButton) {
 			mDefaultActivityButton.setVisibility(VISIBLE);
-			ResolveInfo activity = mAdapter.getDefaultActivity();
-			PackageManager packageManager = mContext.getPackageManager();
-			mDefaultActivityButtonImage.setImageDrawable(activity.loadIcon(packageManager));
+			ActivityResolveInfo activity = mAdapter.getDefaultActivity();
+			mDefaultActivityButtonImage.setImageDrawable(activity.icon);
 			if (mDefaultActionButtonContentDescription != 0) {
-				CharSequence label = activity.loadLabel(packageManager);
 				String contentDescription = mContext.getString(
-						mDefaultActionButtonContentDescription, label);
+						mDefaultActionButtonContentDescription, activity.label);
 				mDefaultActivityButton.setContentDescription(contentDescription);
 				//TODO: CheatSheet.setup(mDefaultActivityButton);
 			}
@@ -647,7 +646,7 @@ public class ShareView extends ViewGroup implements ActivityChooserModelClient {
 		public void onClick(View view) {
 			if (view == mDefaultActivityButton || view == mDefaultActivityButtonImage) {
 				dismissPopup();
-				ResolveInfo defaultActivity = mAdapter.getDefaultActivity();
+				ActivityResolveInfo defaultActivity = mAdapter.getDefaultActivity();
 				final int index = mAdapter.getDataModel().getActivityIndex(defaultActivity);
 				Intent launchIntent = mAdapter.getDataModel().chooseActivity(index);
 				if (launchIntent != null) {
@@ -812,16 +811,15 @@ public class ShareView extends ViewGroup implements ActivityChooserModelClient {
 					convertView = LayoutInflater.from(mContext).inflate(
 							R.layout.sv__share_view_list_item, parent, false);
 				}
-				PackageManager packageManager = mContext.getPackageManager();
-				ResolveInfo activity = (ResolveInfo) getItem(position);
+				ActivityResolveInfo activity = (ActivityResolveInfo) getItem(position);
 
 				// Set the title.
 				TextView titleView = (TextView) convertView.findViewById(R.id.title);
-				titleView.setText(activity.loadLabel(packageManager));
+				titleView.setText(activity.label);
 				titleView.setTextColor(mPopupTextColor);
 
 				// Set the icon
-				Drawable icon = activity.loadIcon(packageManager);
+				Drawable icon = activity.icon;
 				icon.setBounds(mActivityIconBounds);
 				titleView.setCompoundDrawables(icon, null, null, null);
 
@@ -872,7 +870,7 @@ public class ShareView extends ViewGroup implements ActivityChooserModelClient {
 			}
 		}
 
-		public ResolveInfo getDefaultActivity() {
+		public ActivityResolveInfo getDefaultActivity() {
 			return mDataModel.getDefaultActivity();
 		}
 

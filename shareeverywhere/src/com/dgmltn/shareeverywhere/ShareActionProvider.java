@@ -3,12 +3,13 @@ package com.dgmltn.shareeverywhere;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
 import android.view.ActionProvider;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.SubMenu;
 import android.view.View;
+
+import com.dgmltn.shareeverywhere.ActivityChooserModel.ActivityResolveInfo;
 
 public class ShareActionProvider extends ActionProvider {
 
@@ -53,9 +54,9 @@ public class ShareActionProvider extends ActionProvider {
 
 		// Populate the sub-menu with a sub set of the activities.
 		for (int i = 0; i < collapsedActivityCount; i++) {
-			ResolveInfo activity = dataModel.getActivity(i);
-			subMenu.add(0, i, i, activity.loadLabel(packageManager))
-					.setIcon(activity.loadIcon(packageManager))
+			ActivityResolveInfo activity = dataModel.getActivity(i);
+			subMenu.add(0, i, i, activity.label)
+					.setIcon(activity.icon)
 					.setOnMenuItemClickListener(mShareView.mCallbacks);
 		}
 
@@ -64,9 +65,9 @@ public class ShareActionProvider extends ActionProvider {
 			SubMenu expandedSubMenu = subMenu.addSubMenu(Menu.NONE, collapsedActivityCount,
 					collapsedActivityCount, mContext.getString(R.string.See_all___));
 			for (int i = 0; i < expandedActivityCount; i++) {
-				ResolveInfo activity = dataModel.getActivity(i);
-				expandedSubMenu.add(0, i, i, activity.loadLabel(packageManager))
-						.setIcon(activity.loadIcon(packageManager))
+				ActivityResolveInfo activity = dataModel.getActivity(i);
+				expandedSubMenu.add(0, i, i, activity.label)
+						.setIcon(activity.icon)
 						.setOnMenuItemClickListener(mShareView.mCallbacks);
 			}
 		}
