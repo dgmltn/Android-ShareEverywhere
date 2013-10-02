@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
 
     <style name="Widget">
         <item name="android:textAppearance">?android:attr/textAppearance</item>
@@ -12,6 +12,9 @@
         <item name="sv_buttonDrawable">@drawable/sv__ic_menu_share_holo_dark</item>
         <item name="sv_buttonBackground">@drawable/sv__list_selector_holo_dark</item>
         <item name="sv_popupBackground">@drawable/sv__menu_dropdown_panel_holo_dark</item>
+        <item name="sv_popupSelector">@drawable/sv__list_selector_holo_dark</item>
+        <item name="sv_popupDivider">@drawable/sv__list_divider_holo_dark</item>
+        <item name="sv_popupTextColor">#f3f3f3</item>
         <item name="sv_favoriteDisplayed">true</item>
     </style>
 
@@ -28,6 +31,9 @@
         <item name="sv_buttonDrawable">@drawable/sv__ic_menu_share_holo_light</item>
         <item name="sv_buttonBackground">@drawable/sv__list_selector_holo_light</item>
         <item name="sv_popupBackground">@drawable/sv__menu_dropdown_panel_holo_light</item>
+        <item name="sv_popupSelector">@drawable/sv__list_selector_holo_light</item>
+        <item name="sv_popupDivider">@drawable/sv__list_divider_holo_light</item>
+        <item name="sv_popupTextColor">#000000</item>
     </style>
 
     <style name="Widget.ShareView.Light.Simple">

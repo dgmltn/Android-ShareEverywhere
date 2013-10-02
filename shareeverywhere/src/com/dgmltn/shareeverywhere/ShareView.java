@@ -20,9 +20,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.database.DataSetObserver;
+import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.util.AttributeSet;
@@ -94,11 +96,16 @@ public class ShareView extends ViewGroup implements ActivityChooserModelClient {
 	private final IcsLinearLayout mActivityChooserContent;
 
 	/**
-	 * Stores the background drawable to allow hiding and latter showing.
+	 * Store obtained styles for later use and lazy loading.
 	 */
 	private final int mBackgroundResId;
 	private final int mButtonBackgroundResId;
 	private final int mPopupBackgroundResId;
+	private final int mPopupDividerResId;
+	private final int mPopupSelectorResId;
+	private final ColorStateList mPopupTextColor;
+
+	private final Rect mActivityIconBounds;
 
 	/**
 	 * The expand activities action button;
@@ -233,8 +240,16 @@ public class ShareView extends ViewGroup implements ActivityChooserModelClient {
 		mDisplayDefaultActivityButton = a.getBoolean(R.styleable.ShareView_sv_favoriteDisplayed, true);
 		mButtonBackgroundResId = a.getResourceId(R.styleable.ShareView_sv_buttonBackground, 0);
 		mPopupBackgroundResId = a.getResourceId(R.styleable.ShareView_sv_popupBackground, 0);
+		mPopupDividerResId = a.getResourceId(R.styleable.ShareView_sv_popupDivider, 0);
+		mPopupSelectorResId = a.getResourceId(R.styleable.ShareView_sv_popupSelector, 0);
+		mPopupTextColor = a.getColorStateList(R.styleable.ShareView_sv_popupTextColor);
 
 		a.recycle();
+
+		int activityIconSize = context.getResources().getDimensionPixelSize(R.dimen.sv__activity_icon_size);
+		mActivityIconBounds = new Rect();
+		mActivityIconBounds.right = activityIconSize;
+		mActivityIconBounds.bottom = activityIconSize;
 
 		LayoutInflater inflater = LayoutInflater.from(mContext);
 		inflater.inflate(R.layout.sv__share_view_impl, this, true);
@@ -527,6 +542,8 @@ public class ShareView extends ViewGroup implements ActivityChooserModelClient {
 			mListPopupWindow.setOnItemClickListener(mCallbacks);
 			mListPopupWindow.setOnDismissListener(mCallbacks);
 			mListPopupWindow.setBackgroundResource(mPopupBackgroundResId);
+			mListPopupWindow.setListDividerResource(mPopupDividerResId);
+			mListPopupWindow.setListSelectorResource(mPopupSelectorResId);
 		}
 		return mListPopupWindow;
 	}
@@ -777,29 +794,37 @@ public class ShareView extends ViewGroup implements ActivityChooserModelClient {
 		public View getView(int position, View convertView, ViewGroup parent) {
 			final int itemViewType = getItemViewType(position);
 			switch (itemViewType) {
+
 			case ITEM_VIEW_TYPE_FOOTER:
 				if (convertView == null || convertView.getId() != ITEM_VIEW_TYPE_FOOTER) {
-					convertView = LayoutInflater.from(getContext()).inflate(
+					convertView = LayoutInflater.from(mContext).inflate(
 							R.layout.sv__share_view_list_item, parent, false);
 					convertView.setId(ITEM_VIEW_TYPE_FOOTER);
 					TextView titleView = (TextView) convertView.findViewById(R.id.title);
-					titleView.setText(mContext.getString(
-							R.string.See_all___));
+					titleView.setText(mContext.getString(R.string.See_all___));
+					titleView.setTextAppearance(mContext, 0);
+					titleView.setTextColor(mPopupTextColor);
 				}
 				return convertView;
+
 			case ITEM_VIEW_TYPE_ACTIVITY:
 				if (convertView == null || convertView.getId() != R.id.list_item) {
-					convertView = LayoutInflater.from(getContext()).inflate(
+					convertView = LayoutInflater.from(mContext).inflate(
 							R.layout.sv__share_view_list_item, parent, false);
 				}
 				PackageManager packageManager = mContext.getPackageManager();
-				// Set the icon
-				ImageView iconView = (ImageView) convertView.findViewById(R.id.icon);
 				ResolveInfo activity = (ResolveInfo) getItem(position);
-				iconView.setImageDrawable(activity.loadIcon(packageManager));
+
 				// Set the title.
 				TextView titleView = (TextView) convertView.findViewById(R.id.title);
 				titleView.setText(activity.loadLabel(packageManager));
+				titleView.setTextColor(mPopupTextColor);
+
+				// Set the icon
+				Drawable icon = activity.loadIcon(packageManager);
+				icon.setBounds(mActivityIconBounds);
+				titleView.setCompoundDrawables(icon, null, null, null);
+
 				if (IS_HONEYCOMB) {
 					// Highlight the default.
 					if (mShowDefaultActivity && position == 0 && mHighlightDefaultActivity) {
@@ -810,6 +835,7 @@ public class ShareView extends ViewGroup implements ActivityChooserModelClient {
 					}
 				}
 				return convertView;
+
 			default:
 				throw new IllegalArgumentException();
 			}

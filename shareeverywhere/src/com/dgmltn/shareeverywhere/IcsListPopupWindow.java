@@ -47,6 +47,9 @@ public class IcsListPopupWindow {
 	private int mDropDownVerticalOffset;
 	private boolean mDropDownVerticalOffsetSet;
 
+	private int mListSelectorResId;
+	private int mListDividerResId;
+
 	private int mListItemExpandMaximum = Integer.MAX_VALUE;
 
 	private View mPromptView;
@@ -55,8 +58,6 @@ public class IcsListPopupWindow {
 	private DataSetObserver mObserver;
 
 	private View mDropDownAnchorView;
-
-	private Drawable mDropDownListHighlight;
 
 	private AdapterView.OnItemClickListener mItemClickListener;
 	private AdapterView.OnItemSelectedListener mItemSelectedListener;
@@ -136,6 +137,14 @@ public class IcsListPopupWindow {
 
 	public void setBackgroundDrawable(Drawable d) {
 		mPopup.setBackgroundDrawable(d);
+	}
+
+	public void setListSelectorResource(int resId) {
+		mListSelectorResId = resId;
+	}
+
+	public void setListDividerResource(int resId) {
+		mListDividerResId = resId;
 	}
 
 	public void setAnchorView(View anchor) {
@@ -332,14 +341,9 @@ public class IcsListPopupWindow {
 		int otherHeights = 0;
 
 		if (mDropDownList == null) {
-			Context context = mContext;
-
-			mDropDownList = new DropDownListView(context, !mModal);
-			if (mDropDownListHighlight != null) {
-				mDropDownList.setSelector(mDropDownListHighlight);
-			}
-			mDropDownList.setDivider(context.getResources().getDrawable(R.drawable.sv__list_divider_holo_dark));
-			mDropDownList.setSelector(R.drawable.sv__list_selector_holo_dark);
+			mDropDownList = new DropDownListView(mContext, !mModal);
+			mDropDownList.setDivider(mContext.getResources().getDrawable(mListDividerResId));
+			mDropDownList.setSelector(mListSelectorResId);
 			mDropDownList.setAdapter(mAdapter);
 			mDropDownList.setOnItemClickListener(mItemClickListener);
 			mDropDownList.setFocusable(true);
@@ -372,7 +376,7 @@ public class IcsListPopupWindow {
 			if (hintView != null) {
 				// if an hint has been specified, we accomodate more space for it and
 				// add a text view in the drop down menu, at the bottom of the list
-				LinearLayout hintContainer = new LinearLayout(context);
+				LinearLayout hintContainer = new LinearLayout(mContext);
 				hintContainer.setOrientation(LinearLayout.VERTICAL);
 
 				LinearLayout.LayoutParams hintParams = new LinearLayout.LayoutParams(
