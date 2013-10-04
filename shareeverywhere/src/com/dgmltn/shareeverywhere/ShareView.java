@@ -18,8 +18,6 @@ package com.dgmltn.shareeverywhere;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
 import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
@@ -316,7 +314,7 @@ public class ShareView extends ViewGroup implements ActivityChooserModelClient {
 	 * Set the intent(s) for this ShareView.
 	 * @param intent
 	 */
-	public void setIntent(Intent... intents) {
+	public void setShareIntent(Intent... intents) {
 		if (mAdapter != null && mAdapter.mDataModel != null) {
 			mAdapter.mDataModel.setIntent(intents);
 		}

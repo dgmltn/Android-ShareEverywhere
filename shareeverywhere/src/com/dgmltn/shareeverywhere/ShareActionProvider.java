@@ -76,7 +76,7 @@ public class ShareActionProvider extends ActionProvider {
 	 * Set the intent(s) for this ShareActionProvider.
 	 * @param intent
 	 */
-	public void setIntent(Intent... intents) {
-		mShareView.setIntent(intents);
+	public void setShareIntent(Intent... intents) {
+		mShareView.setShareIntent(intents);
 	}
 }
