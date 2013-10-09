@@ -689,13 +689,15 @@ public class ActivityChooserModel extends DataSetObservable {
 		}
 
 		for (Intent intent : intents) {
-			List<ResolveInfo> resolveInfos =
-					mContext.getPackageManager().queryIntentActivities(intent, 0);
+			if (intent != null) {
+				List<ResolveInfo> resolveInfos =
+						mContext.getPackageManager().queryIntentActivities(intent, 0);
 
-			for (ResolveInfo resolveInfo : resolveInfos) {
-				ActivityResolveInfo info = new ActivityResolveInfo(resolveInfo, intent);
-				if (!info.isContainedIn(mActivities)) {
-					mActivities.add(info);
+				for (ResolveInfo resolveInfo : resolveInfos) {
+					ActivityResolveInfo info = new ActivityResolveInfo(resolveInfo, intent);
+					if (!info.isContainedIn(mActivities)) {
+						mActivities.add(info);
+					}
 				}
 			}
 		}
