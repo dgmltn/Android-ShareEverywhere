@@ -4,7 +4,6 @@ Android-ShareEverywhere
 This project is the tribute to my favorite Android Widget: the Share button. Share ALL THE THINGS!
 
 ![screenshot](https://raw.github.com/dgmltn/Android-ShareEverywhere/master/art/screenshot.png)
-![screenshot](https://raw.github.com/dgmltn/Android-ShareEverywhere/master/art/screenshot2.png)
 
 ## Summary
 
