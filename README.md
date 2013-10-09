@@ -3,6 +3,9 @@ Android-ShareEverywhere
 
 This project is the tribute to my favorite Android Widget: the Share button. Share ALL THE THINGS!
 
+![screenshot](https://raw.github.com/dgmltn/Android-ShareEverywhere/master/art/screenshot.png)
+![screenshot](https://raw.github.com/dgmltn/Android-ShareEverywhere/master/art/screenshot2.png)
+
 ## Summary
 
 You may know about the [ShareActionProvider](http://developer.android.com/reference/android/widget/ShareActionProvider.html) that was introduced in API 14. This project extends the ShareActionProvider in a few very important ways:
@@ -61,6 +64,35 @@ Then in your Activity/Fragment:
 ```
 
 ### Style
+
+ShareEverywhere is quite styleable, most things that may want to be styled, can. Set this in your `theme.xml`:
+
+```xml
+<style name="AppTheme">
+    ...
+    <item name="shareViewStyle">@style/Widget.ShareView.Dark</item>
+</style>
+```
+
+Or, style your view explicitly:
+
+```xml
+<com.dgmltn.shareeverywhere.ShareView
+    style="@style/Widget.ShareView.Light"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content" />
+```
+
+Create your own style. Styleable elements can be found in `res/values/styles.xml`.
+
+```xml
+<style name="Widget.ShareView.Custom" parent="Widget.ShareView">
+    <item name="sv_buttonDrawable">@drawable/my_share_button</item>
+    <item name="sv_buttonBackground">@drawable/my_list_selector</item>
+    <item name="sv_popupTextColor">#f3f3f3</item>
+</style>
+```
+
 
 
 ## Obtaining
