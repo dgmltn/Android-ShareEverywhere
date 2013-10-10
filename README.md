@@ -25,7 +25,7 @@ Using this view in a layout is simple:
 <com.dgmltn.shareeverywhere.ShareView
     android:id="@+id/share_view"
     android:layout_width="wrap_content"
-    android:layout_height="48dp" />
+    android:layout_height="wrap_content" />
 ```
 
 Then give it an intent (or multiple intents) in your Activity or Fragment:
@@ -57,7 +57,8 @@ Then in your Activity/Fragment:
         getMenuInflater().inflate(R.menu.main, menu);
 
         MenuItem item = menu.findItem(R.id.action_share);
-        ShareActionProvider shareActionProvider = (ShareActionProvider) item.getActionProvider();
+        ShareActionProvider shareActionProvider 
+            = (ShareActionProvider) item.getActionProvider();
         shareActionProvider.setShareIntent(mSharedIntents);
         return true;
     }
