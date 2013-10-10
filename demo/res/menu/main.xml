@@ -1,0 +1,14 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:id="@+id/action_share"
+        android:actionProviderClass="com.dgmltn.shareeverywhere.ShareActionProvider"
+        android:showAsAction="always"
+        android:title="Share"/>
+    <item
+        android:id="@+id/action_share_2"
+        android:actionProviderClass="com.dgmltn.shareeverywhere.ShareActionProvider"
+        android:showAsAction="never"
+        android:title="Share"/>
+
+</menu>

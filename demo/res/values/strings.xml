@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">ShareEverywhere</string>
+    <string name="intro">This app demonstrates the ShareEverywhere widget, both in the ActionBar and as a plain view.</string>
+
+</resources>
