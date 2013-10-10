@@ -9,9 +9,10 @@ This project is the tribute to my favorite Android Widget: the Share button. Sha
 
 You may know about the [ShareActionProvider](http://developer.android.com/reference/android/widget/ShareActionProvider.html) that was introduced in API 14. This project extends the ShareActionProvider in a few very important ways:
 
- # It breaks the Widget free of the ActionBar. It can be used as a standalone View in any layout.
- # It allows
- # It can be used (with [ActionBarSherlock](http://actionbarsherlock.com/) or [ActionBarCompat](http://developer.android.com/reference/android/support/v7/app/ActionBar.html)) on versions of android prior to API 14.
+ 1. It breaks the Widget free of the ActionBar. It can be used as a standalone View in any layout.
+ 2. It allows you to specify multiple share intents, which will be combined when displayed.
+ 3. Its default sorting function also uses alphabetical order.
+ 4. It can be used (with [ActionBarSherlock](http://actionbarsherlock.com/)) on versions of android prior to API 14.
 
 
 ## Usage
@@ -100,7 +101,7 @@ Because it contains resources, Android-ShareEverywhere is a library project. Dow
 
 ### Requirements
 
- * [ActionBarSherlock](http://actionbarsherlock.com/) or [ActionBarCompat](http://developer.android.com/reference/android/support/v7/app/ActionBar.html)) if intended for Android versions prior to API 14
+ * [ActionBarSherlock](http://actionbarsherlock.com/) if intended for Android versions prior to API 14
  
 ## License
 
