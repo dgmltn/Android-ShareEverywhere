@@ -16,6 +16,7 @@
 
 package com.dgmltn.shareeverywhere;
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.ColorStateList;
@@ -67,6 +68,28 @@ import com.dgmltn.shareeverywhere.ActivityChooserModel.ActivityResolveInfo;
  */
 public class ShareView extends ViewGroup implements ActivityChooserModelClient {
 
+    /**
+     * Called when a share target has been selected. The client can
+     * decide whether to perform some action before the sharing is
+     * actually performed.
+     * <p>
+     * <strong>Note:</strong> Modifying the intent is not permitted and
+     *     any changes to the latter will be ignored.
+     * </p>
+     * <p>
+     * <strong>Note:</strong> You should <strong>not</strong> handle the
+     *     intent here. This callback aims to notify the client that a
+     *     sharing is being performed, so the client can update the UI
+     *     if necessary.
+     * </p>
+     *
+     * @param source The source of the notification.
+     * @param intent The intent for launching the chosen share target.
+     */
+	public interface OnShareTargetSelectedListener {
+		void onShareTargetSelected(ShareView view, Intent intent);
+	}
+
 	private static final String TAG = ShareView.class.getSimpleName();
 
 	/**
@@ -83,6 +106,8 @@ public class ShareView extends ViewGroup implements ActivityChooserModelClient {
 	 * An adapter for displaying the activities in an {@link AdapterView}.
 	 */
 	private final ActivityChooserViewAdapter mAdapter;
+
+	private OnShareTargetSelectedListener mListener;
 
 	/**
 	 * Implementation of various interfaces to avoid publishing them in the APIs.
@@ -333,6 +358,20 @@ public class ShareView extends ViewGroup implements ActivityChooserModelClient {
 	 */
 	public void setExpandActivityOverflowButtonDrawable(Drawable drawable) {
 		mExpandActivityOverflowButtonImage.setImageDrawable(drawable);
+	}
+
+    /**
+     * Sets a listener to be notified when a share target has been selected.
+     * The listener can optionally decide to handle the selection and
+     * not rely on the default behavior which is to launch the activity.
+     * <p>
+     * <strong>Note:</strong> If you choose the backing share history file
+     *     you will still be notified in this callback.
+     * </p>
+     * @param listener The listener.
+     */
+	public void setOnShareTargetSelectedListener(OnShareTargetSelectedListener listener) {
+		mListener = listener;
 	}
 
 	/**
@@ -619,6 +658,10 @@ public class ShareView extends ViewGroup implements ActivityChooserModelClient {
 					if (launchIntent != null) {
 						launchIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
 						mContext.startActivity(launchIntent);
+
+						if (mListener != null) {
+							mListener.onShareTargetSelected(ShareView.this, launchIntent);
+						}
 					}
 				}
 			}
@@ -688,8 +731,11 @@ public class ShareView extends ViewGroup implements ActivityChooserModelClient {
 	}
 
 	private static class SetActivated {
+		@TargetApi(Build.VERSION_CODES.HONEYCOMB)
 		public static void invoke(View view, boolean activated) {
-			view.setActivated(activated);
+			if (IS_HONEYCOMB) {
+				view.setActivated(activated);
+			}
 		}
 	}
 
@@ -821,14 +867,12 @@ public class ShareView extends ViewGroup implements ActivityChooserModelClient {
 				icon.setBounds(mActivityIconBounds);
 				titleView.setCompoundDrawables(icon, null, null, null);
 
-				if (IS_HONEYCOMB) {
-					// Highlight the default.
-					if (mShowDefaultActivity && position == 0 && mHighlightDefaultActivity) {
-						SetActivated.invoke(convertView, true);
-					}
-					else {
-						SetActivated.invoke(convertView, false);
-					}
+				// Highlight the default.
+				if (mShowDefaultActivity && position == 0 && mHighlightDefaultActivity) {
+					SetActivated.invoke(convertView, true);
+				}
+				else {
+					SetActivated.invoke(convertView, false);
 				}
 				return convertView;
 

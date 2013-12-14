@@ -10,6 +10,7 @@ import android.view.SubMenu;
 import android.view.View;
 
 import com.dgmltn.shareeverywhere.ActivityChooserModel.ActivityResolveInfo;
+import com.dgmltn.shareeverywhere.ShareView.OnShareTargetSelectedListener;
 
 public class ShareActionProvider extends ActionProvider {
 
@@ -75,8 +76,20 @@ public class ShareActionProvider extends ActionProvider {
 	/**
 	 * Set the intent(s) for this ShareActionProvider.
 	 * @param intent
+	 *
+	 * @see ShareView#setShareIntent(Intent...)
 	 */
 	public void setShareIntent(Intent... intents) {
 		mShareView.setShareIntent(intents);
+	}
+
+	/**
+	 * Sets the OnShareTargetSelectedListener for this ShareActionProvider.
+	 * @param listener
+	 *
+	 * @see ShareView#setOnShareTargetSelectedListener(OnShareTargetSelectedListener)
+	 */
+	public void setOnShareTargetSelectedListener(OnShareTargetSelectedListener listener) {
+		mShareView.setOnShareTargetSelectedListener(listener);
 	}
 }
