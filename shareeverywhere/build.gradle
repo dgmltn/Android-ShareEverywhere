@@ -15,3 +15,34 @@ android {
         }
     }
 }
+
+// JCenter publishing
+// http://inthecheesefactory.com/blog/how-to-upload-library-to-jcenter-maven-central-as-dependency/en
+
+ext {
+    bintrayRepo = 'maven'
+    bintrayName = 'share-everywhere'
+ 
+    publishedGroupId = 'com.dgmltn'
+    libraryName = 'share-everywhere'
+    artifact = 'share-everywhere'
+ 
+    libraryDescription = 'This project is the tribute to my favorite Android Widget: the Share button. Share ALL THE THINGS!'
+ 
+    siteUrl = 'https://github.com/dgmltn/Android-ShareEverywhere'
+    gitUrl = 'https://github.com/dgmltn/Android-ShareEverywhere.git'
+ 
+    libraryVersion = '1.0.0'
+ 
+    developerId = 'dgmltn'
+    developerName = 'Doug Melton'
+    developerEmail = 'what@supbro.com'
+ 
+    licenseName = 'The Apache Software License, Version 2.0'
+    licenseUrl = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+    allLicenses = ["Apache-2.0"]
+}
+
+apply from: 'https://raw.githubusercontent.com/nuuneoi/JCenter/master/installv1.gradle'
+apply from: 'https://raw.githubusercontent.com/nuuneoi/JCenter/master/bintrayv1.gradle'
+
