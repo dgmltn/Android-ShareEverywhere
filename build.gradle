@@ -2,15 +2,22 @@
 
 buildscript {
     repositories {
-        mavenCentral()
+        jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:0.8.0'
+        classpath 'com.android.tools.build:gradle:1.2.3'
     }
 }
 
 // Sub-projects/library projects will refer to these top-level SDK and buildTools versions
 
-ext.compileSdkVersion=18
-ext.buildToolsVersion="19.0.0"
+ext.compileSdkVersion=21
+ext.buildToolsVersion="22.0.1"
 
+allprojects {
+    gradle.projectsEvaluated {
+        tasks.withType(JavaCompile) {
+            options.compilerArgs << "-Xlint:unchecked" << "-Xlint:deprecation"
+        }
+    }
+}
