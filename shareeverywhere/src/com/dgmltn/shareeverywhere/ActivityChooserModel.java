@@ -20,6 +20,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.lang.ref.WeakReference;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -299,7 +300,7 @@ public class ActivityChooserModel extends DataSetObservable {
 	/**
 	 * Policy for controlling how the model handles chosen activities.
 	 */
-	private OnChooseActivityListener mActivityChoserModelPolicy;
+	private WeakReference<OnChooseActivityListener> mOnChooseActivityListenerRef;
 
 	/**
 	 * Gets the data model backed by the contents of the provided file with historical data.
@@ -434,13 +435,15 @@ public class ActivityChooserModel extends DataSetObservable {
 		Intent choiceIntent = new Intent(chosenActivity.intent);
 		choiceIntent.setComponent(chosenName);
 
-		if (mActivityChoserModelPolicy != null) {
-			// Do not allow the policy to change the intent.
-			Intent choiceIntentCopy = new Intent(choiceIntent);
-			final boolean handled = mActivityChoserModelPolicy.onChooseActivity(this,
-					choiceIntentCopy);
-			if (handled) {
-				return null;
+		if (mOnChooseActivityListenerRef != null) {
+			OnChooseActivityListener listener = mOnChooseActivityListenerRef.get();
+			if (listener != null) {
+				// Do not allow the policy to change the intent.
+				Intent choiceIntentCopy = new Intent(choiceIntent);
+				final boolean handled = listener.onChooseActivity(this, choiceIntentCopy);
+				if (handled) {
+					return null;
+				}
 			}
 		}
 
@@ -457,7 +460,12 @@ public class ActivityChooserModel extends DataSetObservable {
 	 * @param listener The listener.
 	 */
 	public void setOnChooseActivityListener(OnChooseActivityListener listener) {
-		mActivityChoserModelPolicy = listener;
+		if (listener == null) {
+			mOnChooseActivityListenerRef = null;
+		}
+		else {
+			mOnChooseActivityListenerRef = new WeakReference<>(listener);
+		}
 	}
 
 	/**
