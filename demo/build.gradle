@@ -1,4 +1,5 @@
-apply plugin: 'android'
+apply plugin: 'android-sdk-manager'
+apply plugin: 'com.android.application'
 
 dependencies {
     compile project(':shareeverywhere')
@@ -7,6 +8,17 @@ dependencies {
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
     buildToolsVersion rootProject.ext.buildToolsVersion
+
+    defaultConfig {
+        minSdkVersion 8
+        targetSdkVersion 21
+        versionCode 1
+        versionName "1.0.0"
+    }
+
+    packagingOptions {
+        exclude 'LICENSE.txt'
+    }
 
     sourceSets {
         main {
