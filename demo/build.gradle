@@ -2,7 +2,7 @@ apply plugin: 'android-sdk-manager'
 apply plugin: 'com.android.application'
 
 dependencies {
-    compile project(':shareeverywhere')
+    compile project(':share-everywhere')
 }
 
 android {
