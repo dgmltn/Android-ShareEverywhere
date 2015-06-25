@@ -7,15 +7,20 @@ buildscript {
     dependencies {
         classpath 'com.android.tools.build:gradle:1.2.3'
         classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.2'
-        classpath 'com.github.dcendents:android-maven-gradle-plugin:1.3'
         classpath 'com.jakewharton.sdkmanager:gradle-plugin:0.12.0'
     }
 }
 
 // Sub-projects/library projects will refer to these top-level SDK and buildTools versions
 
-ext.compileSdkVersion=21
-ext.buildToolsVersion="22.0.1"
+ext.compileSdkVersion = 21
+ext.buildToolsVersion = '22.0.1'
+ext.libraryVersion = '1.0.1'
+ext.libraryVersionCode = 1
+
+// Bintray configuration
+ext.bintrayGroupId = 'com.dgmltn'
+ext.bintrayArtifactId = 'share-everywhere'
 
 allprojects {
     gradle.projectsEvaluated {

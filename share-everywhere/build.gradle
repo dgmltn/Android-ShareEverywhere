@@ -7,6 +7,13 @@ android {
     compileSdkVersion rootProject.ext.compileSdkVersion
     buildToolsVersion rootProject.ext.buildToolsVersion
 
+    defaultConfig {
+        minSdkVersion 8
+        targetSdkVersion 21
+        versionCode rootProject.ext.libraryVersionCode
+        versionName rootProject.ext.libraryVersion
+    }
+
     sourceSets {
         main {
             manifest.srcFile 'AndroidManifest.xml'
@@ -16,33 +23,55 @@ android {
     }
 }
 
-// JCenter publishing
-// http://inthecheesefactory.com/blog/how-to-upload-library-to-jcenter-maven-central-as-dependency/en
 
-ext {
-    bintrayRepo = 'maven'
-    bintrayName = 'share-everywhere'
- 
-    publishedGroupId = 'com.dgmltn'
-    libraryName = 'share-everywhere'
-    artifact = 'share-everywhere'
- 
-    libraryDescription = 'This project is the tribute to my favorite Android Widget: the Share button. Share ALL THE THINGS!'
- 
-    siteUrl = 'https://github.com/dgmltn/Android-ShareEverywhere'
-    gitUrl = 'https://github.com/dgmltn/Android-ShareEverywhere.git'
- 
-    libraryVersion = '1.0.0'
- 
-    developerId = 'dgmltn'
-    developerName = 'Doug Melton'
-    developerEmail = 'what@supbro.com'
- 
-    licenseName = 'The Apache Software License, Version 2.0'
-    licenseUrl = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
-    allLicenses = ["Apache-2.0"]
+// Publish to Bintray
+
+apply plugin: 'maven-publish'
+apply plugin: 'com.jfrog.bintray'
+
+task sourceJar(type: Jar) {
+    from android.sourceSets.main.java.srcDirs
+    classifier 'sources'
 }
 
-apply from: 'https://raw.githubusercontent.com/nuuneoi/JCenter/master/installv1.gradle'
-apply from: 'https://raw.githubusercontent.com/nuuneoi/JCenter/master/bintrayv1.gradle'
+task javadoc(type: Javadoc) {
+    source = android.sourceSets.main.java.srcDirs
+    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+}
 
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            groupId rootProject.ext.bintrayGroupId
+            artifactId rootProject.ext.bintrayArtifactId
+            version rootProject.ext.libraryVersion
+
+            artifact(javadocJar)
+            artifact(sourceJar)
+            artifact("$buildDir/outputs/aar/share-everywhere-release.aar")
+        }
+    }
+}
+
+Properties properties = new Properties()
+properties.load(project.rootProject.file('local.properties').newDataInputStream())
+
+bintray {
+    user = properties.getProperty("bintray.user")
+    key = properties.getProperty("bintray.apikey")
+    publications = ['mavenJava']
+    publish = true
+    pkg {
+        repo = 'maven'
+        name = rootProject.ext.bintrayArtifactId
+        version {
+            name = rootProject.ext.libraryVersion
+            vcsTag = rootProject.ext.libraryVersion
+        }
+    }
+}
