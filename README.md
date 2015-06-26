@@ -94,11 +94,12 @@ Create your own style. Styleable elements can be found in `res/values/styles.xml
 </style>
 ```
 
-
-
 ## Obtaining
 
-Because it contains resources, Android-ShareEverywhere is a library project. Download the source (or clone it) and "Import Existing Android Code Into Workspace". Then set it as a library project and use that library in your main project.
+Include in your android project from jcenter, using Gradle:
+```groovy
+compile 'com.dgmltn:share-everywhere:1.0.1'
+```
 
 ### Requirements
 
